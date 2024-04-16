@@ -1,5 +1,6 @@
 package io.nextree.travelclub.web.domain.club;
 
+import com.google.gson.Gson;
 import io.nextree.travelclub.web.domain.Entity;
 import io.nextree.travelclub.web.domain.club.vo.Address;
 import io.nextree.travelclub.web.util.exception.InvalidEmailException;
@@ -94,5 +95,7 @@ public class CommunityMember implements Entity {
     public static void main(String[] args) {
         CommunityMember sample = CommunityMember.getSample();
         System.out.println(sample);
+
+        System.out.println(new Gson().toJson(sample));
     }
 }
