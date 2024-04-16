@@ -1,4 +1,4 @@
-package io.nextree.travelclub.web.entity;
+package io.nextree.travelclub.web.domain;
 
 public interface AutoIdEntity {
     String getId();

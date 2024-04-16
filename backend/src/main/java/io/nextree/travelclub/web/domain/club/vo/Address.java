@@ -1,4 +1,4 @@
-package io.nextree.travelclub.web.entity.club.vo;
+package io.nextree.travelclub.web.domain.club.vo;
 
 import lombok.Getter;
 import lombok.Setter;

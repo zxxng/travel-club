@@ -1,6 +1,6 @@
-package io.nextree.travelclub.web.entity.club;
+package io.nextree.travelclub.web.domain.club;
 
-import io.nextree.travelclub.web.entity.club.vo.RoleInClub;
+import io.nextree.travelclub.web.domain.club.vo.RoleInClub;
 import io.nextree.travelclub.web.util.helper.DateUtil;
 import lombok.Getter;
 import lombok.Setter;

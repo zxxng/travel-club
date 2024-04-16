@@ -1,7 +1,7 @@
-package io.nextree.travelclub.web.entity.club;
+package io.nextree.travelclub.web.domain.club;
 
-import io.nextree.travelclub.web.entity.Entity;
-import io.nextree.travelclub.web.entity.club.vo.Address;
+import io.nextree.travelclub.web.domain.Entity;
+import io.nextree.travelclub.web.domain.club.vo.Address;
 import io.nextree.travelclub.web.util.exception.InvalidEmailException;
 import lombok.AccessLevel;
 import lombok.Getter;
