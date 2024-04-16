@@ -1,5 +1,6 @@
 package io.nextree.travelclub.web.domain.club;
 
+import com.google.gson.Gson;
 import io.nextree.travelclub.web.domain.AutoIdEntity;
 import io.nextree.travelclub.web.util.helper.DateUtil;
 import lombok.Getter;
@@ -91,5 +92,7 @@ public class TravelClub implements AutoIdEntity {
     public static void main(String[] args) {
         TravelClub sample = TravelClub.getSample(true);
         System.out.println(sample);
+
+        System.out.println(new Gson().toJson(sample));
     }
 }

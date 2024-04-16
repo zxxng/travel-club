@@ -1,0 +1,77 @@
+package io.nextree.travelclub.web.service.dto;
+
+
+
+import io.nextree.travelclub.web.domain.club.TravelClub;
+import io.nextree.travelclub.web.util.helper.DateUtil;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Getter
+@Setter
+public class TravelClubDto {
+    private String usid;
+    private String name;
+    private String intro;
+    private String foundationDay;
+
+//    private List<ClubMembershipDto> membershipDtoList;
+
+//    private TravelClubDto() {
+//        this.membershipDtoList = new ArrayList<ClubMembershipDto>();
+//    }
+
+    public TravelClubDto(String name, String intro) {
+//        this();
+        this.usid = "00001";
+        this.name = name;
+        this.intro = intro;
+        this.foundationDay = DateUtil.today();
+    }
+
+    public TravelClubDto(TravelClub club) {
+//        this();
+        this.usid = club.getUsid();
+        this.name = club.getName();
+        this.intro = club.getIntro();
+        this.foundationDay = club.getFoundationDay();
+
+//        for (ClubMembership membership : club.getMembershipList()) {
+//            this.membershipDtoList.add(new ClubMembershipDto(membership));
+//        }
+    }
+
+    public TravelClub toTravelClub() {
+        TravelClub travelClub = new TravelClub(name, intro);
+        travelClub.setUsid(usid);
+        travelClub.setFoundationDay(foundationDay);
+
+//        for (ClubMembershipDto membershipDto : membershipDtoList) {
+//            travelClub.getMembershipList().add(membershipDto.toMembership());
+//        }
+
+        return travelClub;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append("club Id: ").append(usid);
+        builder.append(", name: ").append(name);
+        builder.append(", intro: ").append(intro);
+        builder.append(", foundation day: ").append(foundationDay);
+        builder.append("\n");
+
+//        int i = 0;
+//        for (ClubMembershipDto membership : membershipDtoList) {
+//            builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
+//            i++;
+//        }
+
+        return builder.toString();
+    }
+}
