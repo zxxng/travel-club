@@ -1,15 +1,13 @@
 package io.nextree.travelclub.web.store.jpastore.jpo;
 
-import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.TravelClub;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.beans.BeanUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,7 +23,10 @@ public class TravelClubJpo {
     private String foundationDay;
 
     private String boardId;
-//    private List<ClubMembership> membershipList;
+
+    @OneToMany
+    @JoinColumn(name = "clubId", referencedColumnName = "usid")
+    private List<MembershipJpo> membershipList = new ArrayList<MembershipJpo>();
 
     public TravelClubJpo(TravelClub travelClub) {
         BeanUtils.copyProperties(travelClub, this);
@@ -35,6 +36,10 @@ public class TravelClubJpo {
         TravelClub travelClub = new TravelClub(this.name, this.intro);
         travelClub.setUsid(this.usid);
         travelClub.setFoundationDay(this.foundationDay);
+
+        for (MembershipJpo membershipJpo : this.membershipList) {
+            travelClub.getMembershipList().add(membershipJpo.toDomain());
+        }
 
         return travelClub;
     }
