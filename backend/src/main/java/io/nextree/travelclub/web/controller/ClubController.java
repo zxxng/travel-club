@@ -16,7 +16,7 @@ public class ClubController {
         this.clubService = clubService;
     }
 
-    @PostMapping // localhost:8080/club/
+    @PostMapping // localhost:8080/club
     public String register(@RequestBody TravelClubDto travelClubDto) {
         clubService.register(travelClubDto);
 
