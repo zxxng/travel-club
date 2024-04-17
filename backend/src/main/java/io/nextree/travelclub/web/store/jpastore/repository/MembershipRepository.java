@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface MembershipRepository extends JpaRepository<MembershipJpo, String> {
     List<MembershipJpo> findAllByClubId(String clubId);
-    List<MembershipJpo> findAllByMemberId(String memberId);
+    List<MembershipJpo> findAllByMemberEmail(String memberEmail);
 }

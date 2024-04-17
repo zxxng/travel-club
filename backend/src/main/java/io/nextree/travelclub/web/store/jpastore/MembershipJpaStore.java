@@ -42,10 +42,9 @@ public class MembershipJpaStore implements MembershipStore {
         List<MembershipJpo> membershipJpos = membershipRepository.findAllByClubId(clubId);
 
         return membershipJpos.stream()
-                .filter(membership -> membership.getMemberId().equals(memberId))
+                .filter(membership -> membership.getMemberEmail().equals(memberId))
                 .map(membership -> membership.toDomain())
-                .findAny()
-                .orElseThrow(() -> new NoSuchMemberException(String.format("CommunityMember(%s) is not found.", memberId)));
+                .findAny().orElse(null);
     }
 
     @Override
@@ -59,7 +58,7 @@ public class MembershipJpaStore implements MembershipStore {
 
     @Override
     public List<ClubMembership> retrieveByMemberId(String memberId) {
-        List<MembershipJpo> membershipJpos = membershipRepository.findAllByMemberId(memberId);
+        List<MembershipJpo> membershipJpos = membershipRepository.findAllByMemberEmail(memberId);
 
         return membershipJpos.stream()
                 .map(MembershipJpo::toDomain)
