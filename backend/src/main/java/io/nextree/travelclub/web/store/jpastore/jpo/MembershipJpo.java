@@ -30,7 +30,7 @@ public class MembershipJpo {
     }
 
     public ClubMembership toDomain() {
-        ClubMembership clubMembership = new ClubMembership(this.clubId, this.memberId);
+        ClubMembership clubMembership = new ClubMembership(this.id, this.clubId, this.memberId);
         clubMembership.setRole(this.role);
         clubMembership.setJoinDate(this.joinDate);
 

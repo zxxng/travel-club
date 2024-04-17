@@ -1,5 +1,6 @@
 package io.nextree.travelclub.web.domain.club;
 
+import com.google.gson.Gson;
 import io.nextree.travelclub.web.domain.club.vo.RoleInClub;
 import io.nextree.travelclub.web.util.helper.DateUtil;
 import lombok.Getter;
@@ -8,12 +9,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClubMembership {
+    private Long id;
     private String clubId;
     public String memberEmail;
     private RoleInClub role;
     private String joinDate;
 
-    public ClubMembership(TravelClub club, CommunityMember member) {
+    public ClubMembership(Long id, TravelClub club, CommunityMember member) {
+        this.id = id;
         this.clubId = club.getUsid();
         this.memberEmail = member.getEmail();
 
@@ -21,7 +24,8 @@ public class ClubMembership {
         this.joinDate = DateUtil.today();
     }
 
-    public ClubMembership(String clubId, String memberEmail) {
+    public ClubMembership(Long id, String clubId, String memberEmail) {
+        this.id = id;
         this.clubId = clubId;
         this.memberEmail = memberEmail;
 
@@ -33,7 +37,8 @@ public class ClubMembership {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("[Membership] club Id: ").append(clubId);
+        builder.append("[Membership] Id: ").append(id);
+        builder.append(", club Id: ").append(clubId);
         builder.append(", member email: ").append(memberEmail);
         builder.append(", role: ").append(role.name());
         builder.append(", join date: ").append(joinDate);
@@ -42,7 +47,7 @@ public class ClubMembership {
     }
 
     public static ClubMembership getSample(TravelClub club, CommunityMember member) {
-        ClubMembership membership = new ClubMembership(club, member);
+        ClubMembership membership = new ClubMembership(1L, club, member);
         membership.setRole(RoleInClub.Member);
 
         return membership;
@@ -54,5 +59,7 @@ public class ClubMembership {
         ClubMembership sample = ClubMembership.getSample(club, member);
 
         System.out.println(sample);
+
+        System.out.println(new Gson().toJson(sample));
     }
 }
