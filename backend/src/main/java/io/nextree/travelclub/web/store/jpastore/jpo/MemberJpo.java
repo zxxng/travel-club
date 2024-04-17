@@ -30,7 +30,7 @@ public class MemberJpo {
     private List<Address> addresses;
 
     @OneToMany
-    @JoinColumn(name = "memberId", referencedColumnName = "email")
+    @JoinColumn(name = "memberEmail", referencedColumnName = "email")
     private List<MembershipJpo> membershipList = new ArrayList<MembershipJpo>();
 
     public MemberJpo(CommunityMember member) {

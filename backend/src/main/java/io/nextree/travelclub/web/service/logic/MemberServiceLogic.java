@@ -1,7 +1,10 @@
 package io.nextree.travelclub.web.service.logic;
 
+import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.CommunityMember;
+import io.nextree.travelclub.web.domain.club.TravelClub;
 import io.nextree.travelclub.web.service.MemberService;
+import io.nextree.travelclub.web.service.dto.MembershipDto;
 import io.nextree.travelclub.web.service.dto.MemberDto;
 import io.nextree.travelclub.web.store.ClubStore;
 import io.nextree.travelclub.web.store.MemberStore;
@@ -17,11 +20,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class MemberServiceLogic implements MemberService {
-    private ClubStore clubStore;
     private MemberStore memberStore;
 
-    public MemberServiceLogic(ClubStore clubStore, MemberStore memberStore) {
-        this.clubStore = clubStore;
+    public MemberServiceLogic(MemberStore memberStore) {
         this.memberStore = memberStore;
     }
 
@@ -81,18 +82,6 @@ public class MemberServiceLogic implements MemberService {
             throw new NoSuchMemberException("No such member with id: " + memberId);
         }
 
-        CommunityMember member = memberStore.retrieve(memberId);
-
-//        List<ClubMembershipDto> membershipDtoList = findAllMembershipsIn(memberId);
-
-        // modify logic
-//        membershipDtoList.forEach(membershipDto -> {
-//            String targetClub = membershipDto.getClubId();
-//            removeMembership(targetClub, memberId);
-//        });
-
         memberStore.delete(memberId);
     }
-
-    // TODO: membership service logic 추가
 }

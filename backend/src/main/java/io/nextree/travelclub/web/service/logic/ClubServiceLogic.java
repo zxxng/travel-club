@@ -1,24 +1,32 @@
 package io.nextree.travelclub.web.service.logic;
 
+import io.nextree.travelclub.web.domain.club.ClubMembership;
+import io.nextree.travelclub.web.domain.club.CommunityMember;
 import io.nextree.travelclub.web.domain.club.TravelClub;
+import io.nextree.travelclub.web.domain.club.vo.RoleInClub;
 import io.nextree.travelclub.web.service.ClubService;
+import io.nextree.travelclub.web.service.MembershipService;
+import io.nextree.travelclub.web.service.dto.MembershipDto;
 import io.nextree.travelclub.web.service.dto.TravelClubDto;
 import io.nextree.travelclub.web.store.ClubStore;
+import io.nextree.travelclub.web.store.MemberStore;
 import io.nextree.travelclub.web.util.exception.ClubDuplicationException;
+import io.nextree.travelclub.web.util.exception.MemberDuplicationException;
 import io.nextree.travelclub.web.util.exception.NoSuchClubException;
+import io.nextree.travelclub.web.util.exception.NoSuchMemberException;
 import io.nextree.travelclub.web.util.helper.StringUtil;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClubServiceLogic implements ClubService {
     private ClubStore clubStore;
-//    private MemberStore memberStore;
 
     public ClubServiceLogic(ClubStore clubStore) {
         this.clubStore = clubStore;
-//        this.memberStore = ClubStoreMapLycler.getInstance().requestMemberStore();
     }
 
     @Override
@@ -72,17 +80,6 @@ public class ClubServiceLogic implements ClubService {
             throw new NoSuchClubException("No such club with id: " + clubId);
         }
 
-        TravelClub club = clubStore.retrieve(clubId);
-
-//        List<ClubMembershipDto> membershipDtoList = findAllMembershipsIn(clubId);
-
-        // modify logic
-//        membershipDtoList.forEach(membershipDto -> {
-//            removeMembership(clubId, membershipDto.getMemberEmail());
-//        });
-
         clubStore.delete(clubId);
     }
-
-    // TODO: mambership service logic 추가
 }

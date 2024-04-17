@@ -2,6 +2,7 @@ package io.nextree.travelclub.web.service.dto;
 
 
 
+import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.TravelClub;
 import io.nextree.travelclub.web.util.helper.DateUtil;
 import lombok.Getter;
@@ -18,14 +19,14 @@ public class TravelClubDto {
     private String intro;
     private String foundationDay;
 
-//    private List<ClubMembershipDto> membershipDtoList;
+    private List<MembershipDto> membershipDtoList;
 
-//    private TravelClubDto() {
-//        this.membershipDtoList = new ArrayList<ClubMembershipDto>();
-//    }
+    private TravelClubDto() {
+        this.membershipDtoList = new ArrayList<MembershipDto>();
+    }
 
     public TravelClubDto(String name, String intro) {
-//        this();
+        this();
         this.usid = "00001";
         this.name = name;
         this.intro = intro;
@@ -33,15 +34,15 @@ public class TravelClubDto {
     }
 
     public TravelClubDto(TravelClub club) {
-//        this();
+        this();
         this.usid = club.getUsid();
         this.name = club.getName();
         this.intro = club.getIntro();
         this.foundationDay = club.getFoundationDay();
 
-//        for (ClubMembership membership : club.getMembershipList()) {
-//            this.membershipDtoList.add(new ClubMembershipDto(membership));
-//        }
+        for (ClubMembership membership : club.getMembershipList()) {
+            this.membershipDtoList.add(new MembershipDto(membership));
+        }
     }
 
     public TravelClub toTravelClub() {
@@ -49,9 +50,9 @@ public class TravelClubDto {
         travelClub.setUsid(usid);
         travelClub.setFoundationDay(foundationDay);
 
-//        for (ClubMembershipDto membershipDto : membershipDtoList) {
-//            travelClub.getMembershipList().add(membershipDto.toMembership());
-//        }
+        for (MembershipDto membershipDto : membershipDtoList) {
+            travelClub.getMembershipList().add(membershipDto.toMembership());
+        }
 
         return travelClub;
     }
@@ -66,11 +67,11 @@ public class TravelClubDto {
         builder.append(", foundation day: ").append(foundationDay);
         builder.append("\n");
 
-//        int i = 0;
-//        for (ClubMembershipDto membership : membershipDtoList) {
-//            builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
-//            i++;
-//        }
+        int i = 0;
+        for (MembershipDto membership : membershipDtoList) {
+            builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
+            i++;
+        }
 
         return builder.toString();
     }

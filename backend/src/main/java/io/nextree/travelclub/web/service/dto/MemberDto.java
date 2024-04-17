@@ -19,11 +19,11 @@ public class MemberDto {
     private String birthDay;
 
     private List<Address> addresses;
-//    private List<ClubMembershipDto> membershipDtoList;
+    private List<MembershipDto> membershipDtoList;
 
     private MemberDto() {
         this.addresses = new ArrayList<Address>();
-//        this.membershipDtoList = new ArrayList<ClubMembershipDto>();
+        this.membershipDtoList = new ArrayList<MembershipDto>();
     }
 
     public MemberDto(String email, String name, String phoneNumber) {
@@ -39,9 +39,9 @@ public class MemberDto {
         this.birthDay = member.getBirthDay();
         this.addresses = member.getAddresses();
 
-//        member.getMembershipList().forEach(membership -> {
-//            this.membershipDtoList.add(new ClubMembershipDto(membership));
-//        });
+        member.getMembershipList().forEach(membership -> {
+            this.membershipDtoList.add(new MembershipDto(membership));
+        });
     }
 
     public CommunityMember toMember() throws InvalidEmailException {
@@ -53,9 +53,9 @@ public class MemberDto {
             member.getAddresses().add(address);
         }
 
-//        for (ClubMembershipDto membershipDto : membershipDtoList) {
-//            member.getMembershipList().add(membershipDto.toMembership());
-//        }
+        for (MembershipDto membershipDto : membershipDtoList) {
+            member.getMembershipList().add(membershipDto.toMembership());
+        }
 
         return member;
     }
@@ -79,11 +79,11 @@ public class MemberDto {
             }
         }
 
-//        int i = 0;
-//        for (ClubMembershipDto membership : membershipDtoList) {
-//            builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
-//            i++;
-//        }
+        int i = 0;
+        for (MembershipDto membership : membershipDtoList) {
+            builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
+            i++;
+        }
 
         return builder.toString();
     }
