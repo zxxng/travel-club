@@ -26,7 +26,7 @@ public class TravelClubJpo {
 
     @OneToMany
     @JoinColumn(name = "clubId", referencedColumnName = "usid")
-    private List<MembershipJpo> membershipList = new ArrayList<MembershipJpo>();
+    private List<MembershipJpo> membershipList;
 
     public TravelClubJpo(TravelClub travelClub) {
         BeanUtils.copyProperties(travelClub, this);

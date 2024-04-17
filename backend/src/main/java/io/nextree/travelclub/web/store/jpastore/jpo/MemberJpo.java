@@ -31,7 +31,7 @@ public class MemberJpo {
 
     @OneToMany
     @JoinColumn(name = "memberEmail", referencedColumnName = "email")
-    private List<MembershipJpo> membershipList = new ArrayList<MembershipJpo>();
+    private List<MembershipJpo> membershipList;
 
     public MemberJpo(CommunityMember member) {
         BeanUtils.copyProperties(member, this);
