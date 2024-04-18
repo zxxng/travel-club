@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SocialBoard implements Entity {
-    private String clubId;
+    private Long clubId;
     private int sequence;
 
     private String name;
@@ -21,7 +21,7 @@ public class SocialBoard implements Entity {
         this.sequence = 1;
     }
 
-    public SocialBoard(String clubId, String name, String adminEmail) {
+    public SocialBoard(Long clubId, String name, String adminEmail) {
         this();
         this.clubId = clubId;
         this.name = name;
@@ -45,7 +45,7 @@ public class SocialBoard implements Entity {
         CommunityMember member = CommunityMember.getSample();
 
         SocialBoard board = new SocialBoard(
-                club.getUsid(),
+                club.getId(),
                 "Board for " + club.getName(),
                 member.getEmail()
         );
@@ -57,7 +57,7 @@ public class SocialBoard implements Entity {
 
     @Override
     public String getId() {
-        return clubId;
+        return clubId.toString();
     }
 
     public String nextPostingId() {

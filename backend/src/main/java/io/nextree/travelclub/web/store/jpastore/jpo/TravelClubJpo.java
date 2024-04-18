@@ -27,7 +27,9 @@ public class TravelClubJpo {
 
     private String intro;
     private String foundationDay;
-    private String boardId;
+
+    @OneToOne(mappedBy = "club")
+    private BoardJpo board;
 
     @OneToMany
     @JoinColumn(name = "clubId", referencedColumnName = "id")

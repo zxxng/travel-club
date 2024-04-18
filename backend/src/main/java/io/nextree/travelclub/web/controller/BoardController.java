@@ -18,27 +18,25 @@ public class BoardController {
     }
 
     @PostMapping // localhost:8080/board/
-    public String register(@RequestBody BoardDto boardDto) {
+    public Long register(@RequestBody BoardDto boardDto) {
         boardService.register(boardDto);
 
         return boardDto.getClubId();
     }
 
     @GetMapping("/{boardId}")
-    public SocialBoard find(@PathVariable String boardId) {
-        return boardService.find(boardId).toBoard();
+    public BoardDto find(@PathVariable Long boardId) {
+        return boardService.find(boardId);
     }
 
     @GetMapping // localhost:8080/board?name=boardName
-    public List<SocialBoard> findAllByName(@RequestParam String name) {
-        List<BoardDto> boardDtos = boardService.findByName(name);
-
-        return boardDtos.stream().map(BoardDto::toBoard).collect(Collectors.toList());
+    public List<BoardDto> findAllByName(@RequestParam String name) {
+        return boardService.findByName(name);
     }
 
     @GetMapping ("/club")// localhost:8080/board/club?name=clubName
-    public SocialBoard findByClubName(@RequestParam String name) {
-        return boardService.findByClubName(name).toBoard();
+    public BoardDto findByClubName(@RequestParam String name) {
+        return boardService.findByClubName(name);
     }
 
     @PutMapping
@@ -47,7 +45,7 @@ public class BoardController {
     }
 
     @DeleteMapping("/{boardId}")
-    public void delete(@PathVariable String boardId) {
+    public void delete(@PathVariable Long boardId) {
         boardService.remove(boardId);
     }
 }

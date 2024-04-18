@@ -6,6 +6,8 @@ import io.nextree.travelclub.web.service.BoardService;
 import io.nextree.travelclub.web.service.dto.BoardDto;
 import io.nextree.travelclub.web.store.BoardStore;
 import io.nextree.travelclub.web.store.ClubStore;
+import io.nextree.travelclub.web.store.MembershipStore;
+import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
 import io.nextree.travelclub.web.util.exception.BoardDuplicationException;
 import io.nextree.travelclub.web.util.exception.NoSuchBoardException;
 import io.nextree.travelclub.web.util.exception.NoSuchClubException;
@@ -21,33 +23,34 @@ import java.util.stream.Collectors;
 public class BoardServiceLogic implements BoardService {
     private BoardStore boardStore;
     private ClubStore clubStore;
+    private MembershipStore membershipStore;
 
-    public BoardServiceLogic(BoardStore boardStore, ClubStore clubStore) {
+    public BoardServiceLogic(BoardStore boardStore, ClubStore clubStore, MembershipStore membershipStore) {
         this.boardStore = boardStore;
         this.clubStore = clubStore;
+        this.membershipStore = membershipStore;
     }
 
     @Override
-    public String register(BoardDto boardDto) {
-        String boardId = boardDto.getClubId();
+    public Long register(BoardDto boardDto) {
+        Long boardId = boardDto.getClubId();
 
+        // boardId validation
         Optional.ofNullable(boardStore.retrieve(boardId))
                 .ifPresent(board -> {
                     throw new BoardDuplicationException("Board already exists in the club --> " + boardId);
                 });
 
-        TravelClub clubFound = Optional.ofNullable(clubStore.retrieve(boardId))
-                .orElseThrow(() -> new NoSuchClubException("No such club with id --> " + boardId));
+        // email validation
+        validateAdminEmail(boardDto);
 
-        return Optional.ofNullable(clubFound.getMembershipBy(boardDto.getAdminEmail()))
-                .map(adminEmail -> boardStore.create(boardDto.toBoard()))
-                .orElseThrow(() -> new NoSuchMemberException("In the club, No such member with admin's email: " + boardDto.getAdminEmail()));
+        return boardStore.create(boardDto.toBoard());
     }
 
     @Override
-    public BoardDto find(String boardId) {
+    public BoardDto find(Long boardId) {
         return Optional.ofNullable(boardStore.retrieve(boardId))
-                .map(board -> new BoardDto(board))
+                .map(BoardDto::new)
                 .orElseThrow(() -> new NoSuchBoardException("No such board with id: " + boardId));
     }
 
@@ -58,18 +61,14 @@ public class BoardServiceLogic implements BoardService {
             throw new NoSuchBoardException("No such board with name: " + boardName);
         }
 
-        return boards.stream()
-                .map(board -> new BoardDto(board))
-                .collect(Collectors.toList());
+        return boards.stream().map(BoardDto::new).collect(Collectors.toList());
     }
 
     @Override
     public BoardDto findByClubName(String clubName) {
-        System.out.println(String.format("[DEBUG] service logic findByClubName, clubName: %s", clubName));
-        System.out.println(String.format("[DEBUG] service logic findByClubName, clubStore.retrieveByName(clubName): %s", clubStore.retrieveByName(clubName)));
         return Optional.ofNullable(clubStore.retrieveByName(clubName))
                 .map(club -> boardStore.retrieve(club.getId()))
-                .map(board -> new BoardDto(board))
+                .map(BoardDto::new)
                 .orElseThrow(() -> new NoSuchClubException("No such club with name --> " + clubName));
     }
 
@@ -84,20 +83,24 @@ public class BoardServiceLogic implements BoardService {
         if (StringUtil.isEmpty(boardDto.getAdminEmail())) {
             boardDto.setAdminEmail(targetBoard.getAdminEmail());
         } else {
-            Optional.ofNullable(clubStore.retrieve(boardDto.getClubId()))
-                    .map(club -> club.getMembershipBy(boardDto.getAdminEmail()))
-                    .orElseThrow(() -> new NoSuchMemberException("In the club, No such member with admin's email: " + boardDto.getAdminEmail()));
+            validateAdminEmail(boardDto);
         }
 
         boardStore.update(boardDto.toBoard());
     }
 
     @Override
-    public void remove(String boardId) {
+    public void remove(Long boardId) {
         if (!boardStore.exists(boardId)) {
             throw new NoSuchBoardException("No such board with id --> " + boardId);
         }
 
         boardStore.delete(boardId);
+    }
+
+    private void validateAdminEmail(BoardDto boardDto) {
+        MembershipId membershipId = new MembershipId(boardDto.getClubId(), boardDto.getAdminEmail());
+        Optional.ofNullable(membershipStore.retrieveById(membershipId))
+                .orElseThrow(() -> new NoSuchMemberException("In the club, No such member with admin's email: " + boardDto.getAdminEmail()));
     }
 }

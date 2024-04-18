@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface BoardRepository extends JpaRepository<BoardJpo, String> {
+public interface BoardRepository extends JpaRepository<BoardJpo, Long> {
     List<BoardJpo> findAllByName(String name);
 
 }

@@ -8,12 +8,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class BoardDto {
-    private String clubId;
+    private Long clubId;
     private String name;
     private String adminEmail;
     private String createDate;
 
-    public BoardDto(String clubId, String name, String adminEmail) {
+    public BoardDto(Long clubId, String name, String adminEmail) {
         this.clubId = clubId;
         this.name = name;
         this.adminEmail = adminEmail;

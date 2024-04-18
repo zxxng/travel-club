@@ -1,9 +1,7 @@
 package io.nextree.travelclub.web.store.jpastore.jpo;
 
 import io.nextree.travelclub.web.domain.board.SocialBoard;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,9 +14,13 @@ import org.springframework.beans.BeanUtils;
 @Table(name="SOCIAL_BOARD")
 public class BoardJpo {
     @Id
-    private String clubId;
-    private int sequence;
+    private Long clubId;
 
+    @OneToOne
+    @JoinColumn(name = "clubId", referencedColumnName = "id")
+    private TravelClubJpo club;
+
+    private int sequence;
     private String name;
     private String adminEmail;
     private String createDate;

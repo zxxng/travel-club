@@ -6,11 +6,11 @@ import io.nextree.travelclub.web.domain.board.SocialBoard;
 import java.util.List;
 
 public interface BoardStore {
-    String create(SocialBoard board);
-    SocialBoard retrieve(String boardId);
+    Long create(SocialBoard board);
+    SocialBoard retrieve(Long boardId);
     List<SocialBoard> retrieveByName(String name);
     void update(SocialBoard board);
-    void delete(String boardId);
+    void delete(Long boardId);
 
-    boolean exists(String boardId);
+    boolean exists(Long boardId);
 }

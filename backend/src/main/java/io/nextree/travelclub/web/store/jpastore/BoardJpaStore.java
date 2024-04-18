@@ -19,14 +19,14 @@ public class BoardJpaStore implements BoardStore {
     }
 
     @Override
-    public String create(SocialBoard board) {
+    public Long create(SocialBoard board) {
         boardRepository.save(new BoardJpo(board));
 
-        return board.getId();
+        return board.getClubId();
     }
 
     @Override
-    public SocialBoard retrieve(String boardId) {
+    public SocialBoard retrieve(Long boardId) {
         Optional<BoardJpo> boardJpo = boardRepository.findById(boardId);
         if (!boardJpo.isPresent()) {
             return null;
@@ -48,12 +48,12 @@ public class BoardJpaStore implements BoardStore {
     }
 
     @Override
-    public void delete(String boardId) {
+    public void delete(Long boardId) {
         boardRepository.deleteById(boardId);
     }
 
     @Override
-    public boolean exists(String boardId) {
+    public boolean exists(Long boardId) {
         return boardRepository.existsById(boardId);
     }
 }
