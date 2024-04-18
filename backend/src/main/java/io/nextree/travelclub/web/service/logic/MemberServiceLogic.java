@@ -1,12 +1,8 @@
 package io.nextree.travelclub.web.service.logic;
 
-import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.CommunityMember;
-import io.nextree.travelclub.web.domain.club.TravelClub;
 import io.nextree.travelclub.web.service.MemberService;
-import io.nextree.travelclub.web.service.dto.MembershipDto;
 import io.nextree.travelclub.web.service.dto.MemberDto;
-import io.nextree.travelclub.web.store.ClubStore;
 import io.nextree.travelclub.web.store.MemberStore;
 import io.nextree.travelclub.web.util.exception.InvalidEmailException;
 import io.nextree.travelclub.web.util.exception.MemberDuplicationException;

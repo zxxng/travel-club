@@ -3,8 +3,10 @@ package io.nextree.travelclub.web.controller;
 import io.nextree.travelclub.web.domain.club.CommunityMember;
 import io.nextree.travelclub.web.service.MemberService;
 import io.nextree.travelclub.web.service.dto.MemberDto;
+import io.nextree.travelclub.web.service.dto.MembershipDto;
 import org.springframework.web.bind.annotation.*;
 
+import java.lang.reflect.Member;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,15 +27,13 @@ public class MemberController {
     }
 
     @GetMapping("/{email}")
-    public CommunityMember find(@PathVariable String email) {
-        System.out.println(email);
-        return memberService.find(email).toMember();
+    public MemberDto find(@PathVariable String email) {
+        return memberService.find(email);
     }
 
     @GetMapping// localhost:8080/member?name=jena
-    public List<CommunityMember> findByName(@RequestParam String name) {
-        return memberService.findByName(name).stream()
-                .map(MemberDto::toMember).collect(Collectors.toList());
+    public List<MemberDto> findByName(@RequestParam String name) {
+        return memberService.findByName(name);
     }
 
     @PutMapping
