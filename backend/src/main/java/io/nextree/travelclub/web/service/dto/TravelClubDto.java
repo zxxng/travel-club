@@ -1,7 +1,5 @@
 package io.nextree.travelclub.web.service.dto;
 
-
-
 import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.TravelClub;
 import io.nextree.travelclub.web.util.helper.DateUtil;
@@ -14,7 +12,7 @@ import java.util.List;
 @Getter
 @Setter
 public class TravelClubDto {
-    private String usid;
+    private Long id;
     private String name;
     private String intro;
     private String foundationDay;
@@ -27,7 +25,6 @@ public class TravelClubDto {
 
     public TravelClubDto(String name, String intro) {
         this();
-        this.usid = "00001";
         this.name = name;
         this.intro = intro;
         this.foundationDay = DateUtil.today();
@@ -35,7 +32,7 @@ public class TravelClubDto {
 
     public TravelClubDto(TravelClub club) {
         this();
-        this.usid = club.getUsid();
+        this.id = club.getId();
         this.name = club.getName();
         this.intro = club.getIntro();
         this.foundationDay = club.getFoundationDay();
@@ -47,7 +44,7 @@ public class TravelClubDto {
 
     public TravelClub toTravelClub() {
         TravelClub travelClub = new TravelClub(name, intro);
-        travelClub.setUsid(usid);
+        travelClub.setId(id);
         travelClub.setFoundationDay(foundationDay);
 
         for (MembershipDto membershipDto : membershipDtoList) {
@@ -61,7 +58,7 @@ public class TravelClubDto {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("club Id: ").append(usid);
+        builder.append("club Id: ").append(id);
         builder.append(", name: ").append(name);
         builder.append(", intro: ").append(intro);
         builder.append(", foundation day: ").append(foundationDay);

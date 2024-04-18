@@ -17,10 +17,10 @@ public class ClubController {
     }
 
     @PostMapping // localhost:8080/club
-    public String register(@RequestBody TravelClubDto travelClubDto) {
+    public Long register(@RequestBody TravelClubDto travelClubDto) {
         clubService.register(travelClubDto);
 
-        return travelClubDto.getUsid();
+        return travelClubDto.getId();
     }
 
     @GetMapping("/{clubId}")

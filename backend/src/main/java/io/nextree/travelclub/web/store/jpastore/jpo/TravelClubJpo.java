@@ -15,18 +15,21 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name="TRAVEL_CLUB")
+@SequenceGenerator(name = "club_generator", sequenceName = "club_seq", initialValue = 1)
 public class TravelClubJpo {
     @Id
-    private String usid;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "club_generator")
+    private Long id;
+
     private String name;
     private String intro;
     private String foundationDay;
 
     private String boardId;
 
-    @OneToMany
-    @JoinColumn(name = "clubId", referencedColumnName = "usid")
-    private List<MembershipJpo> membershipList;
+//    @OneToMany
+//    @JoinColumn(name = "clubId", referencedColumnName = "id")
+//    private List<MembershipJpo> membershipList;
 
     public TravelClubJpo(TravelClub travelClub) {
         BeanUtils.copyProperties(travelClub, this);
@@ -34,12 +37,12 @@ public class TravelClubJpo {
 
     public TravelClub toDomain() {
         TravelClub travelClub = new TravelClub(this.name, this.intro);
-        travelClub.setUsid(this.usid);
+        travelClub.setId(this.id);
         travelClub.setFoundationDay(this.foundationDay);
 
-        for (MembershipJpo membershipJpo : this.membershipList) {
-            travelClub.getMembershipList().add(membershipJpo.toDomain());
-        }
+//        for (MembershipJpo membershipJpo : this.membershipList) {
+//            travelClub.getMembershipList().add(membershipJpo.toDomain());
+//        }
 
         return travelClub;
     }

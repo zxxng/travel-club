@@ -1,7 +1,7 @@
 package io.nextree.travelclub.web.domain.club;
 
 import com.google.gson.Gson;
-import io.nextree.travelclub.web.domain.AutoIdEntity;
+import io.nextree.travelclub.web.domain.Entity;
 import io.nextree.travelclub.web.util.helper.DateUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +11,12 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TravelClub implements AutoIdEntity {
+public class TravelClub {
     private static final int MINIMUM_NAME_LENGTH =  3;
     private static final int MINIMUM_INTRO_LENGTH =  10;
     public static final String ID_FORMAT = "%05d";
 
-    private String usid;
+    private Long id;
     private String name;
     private String intro;
     private String foundationDay;
@@ -39,7 +39,7 @@ public class TravelClub implements AutoIdEntity {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("[TravelClub] id: ").append(usid);
+        builder.append("[TravelClub] id: ").append(id);
         builder.append(", name: ").append(name);
         builder.append(", intro: ").append(intro);
         builder.append(", foundation day: ").append(foundationDay);
@@ -53,26 +53,10 @@ public class TravelClub implements AutoIdEntity {
         TravelClub club = new TravelClub(name, intro);
 
         if (keyIncluded) {
-            int sequence = 21;
-            club.setAutoId(String.format(ID_FORMAT, sequence));
+            club.setId(21L);
         }
 
         return club;
-    }
-
-    @Override
-    public String getId() {
-        return usid;
-    }
-
-    @Override
-    public String getIdFormat() {
-        return ID_FORMAT;
-    }
-
-    @Override
-    public void setAutoId(String autoId) {
-        this.usid = autoId;
     }
 
     public ClubMembership getMembershipBy(String email) {
@@ -87,6 +71,10 @@ public class TravelClub implements AutoIdEntity {
         }
 
         return null;
+    }
+
+    public String getIdToString() {
+        return id != null ? id.toString() : null;
     }
 
     public static void main(String[] args) {

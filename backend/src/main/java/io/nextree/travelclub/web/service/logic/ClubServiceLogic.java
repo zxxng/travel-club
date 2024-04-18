@@ -37,7 +37,7 @@ public class ClubServiceLogic implements ClubService {
                 });
 
         String clubId = clubStore.create(clubDto.toTravelClub());
-        clubDto.setUsid(clubId);
+        clubDto.setId(Long.parseLong(clubId));
     }
 
     @Override
@@ -61,8 +61,9 @@ public class ClubServiceLogic implements ClubService {
                     throw new ClubDuplicationException("Club already exists with name: " + clubName);
                 });
 
-        TravelClub targetClub = Optional.ofNullable(clubStore.retrieve(clubDto.getUsid()))
-                .orElseThrow(() -> new NoSuchClubException("No such club with id: " + clubDto.getUsid()));
+        String targetId = clubDto.getId() != null ? clubDto.getId().toString() : null;
+        TravelClub targetClub = Optional.ofNullable(clubStore.retrieve(targetId))
+                .orElseThrow(() -> new NoSuchClubException("No such club with id: " + clubDto.getId()));
 
         if (StringUtil.isEmpty(clubDto.getName())) {
             clubDto.setName(targetClub.getName());
