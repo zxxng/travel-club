@@ -3,8 +3,8 @@ package io.nextree.travelclub.web.store.jpastore;
 import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.store.MembershipStore;
 import io.nextree.travelclub.web.store.jpastore.jpo.MembershipJpo;
+import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
 import io.nextree.travelclub.web.store.jpastore.repository.MembershipRepository;
-import io.nextree.travelclub.web.util.exception.NoSuchMemberException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,32 +23,22 @@ public class MembershipJpaStore implements MembershipStore {
     public String create(ClubMembership membership) {
         membershipRepository.save(new MembershipJpo(membership));
 
-        return membership.getClubId();
+        return membership.getClubIdToString();
     }
 
     @Override
-    public ClubMembership retrieve(String membershipId) {
-        // TODO: membershipId test
-        Optional<MembershipJpo> membershipJpo = membershipRepository.findById(membershipId);
-        if (!membershipJpo.isPresent()) {
-            throw new NoSuchMemberException(String.format("ClubMembership(%s) is not found.", membershipId));
+    public ClubMembership retrieveById(MembershipId membershipId) {
+        Optional<MembershipJpo> membership = membershipRepository.findById(membershipId);
+        if (!membership.isPresent()) {
+            return null;
+//            throw new NoSuchMembershipException("No such membership with membership id: " + membershipId);
         }
 
-        return membershipJpo.get().toDomain();
+        return membership.get().toDomain();
     }
 
     @Override
-    public ClubMembership retrieveByClubIdAndMemberId(String clubId, String memberId) {
-        List<MembershipJpo> membershipJpos = membershipRepository.findAllByClubId(clubId);
-
-        return membershipJpos.stream()
-                .filter(membership -> membership.getMemberEmail().equals(memberId))
-                .map(membership -> membership.toDomain())
-                .findAny().orElse(null);
-    }
-
-    @Override
-    public List<ClubMembership> retrieveByClubId(String clubId) {
+    public List<ClubMembership> retrieveByClubId(Long clubId) {
         List<MembershipJpo> membershipJpos = membershipRepository.findAllByClubId(clubId);
 
         return membershipJpos.stream()
@@ -71,12 +61,12 @@ public class MembershipJpaStore implements MembershipStore {
     }
 
     @Override
-    public void delete(String membershipId) {
+    public void delete(MembershipId membershipId) {
         membershipRepository.deleteById(membershipId);
     }
 
     @Override
-    public boolean exists(String membershipId) {
+    public boolean exists(MembershipId membershipId) {
         return membershipRepository.existsById(membershipId);
     }
 }

@@ -29,9 +29,9 @@ public class MemberJpo {
     @Convert(converter = AddressConverter.class)
     private List<Address> addresses;
 
-//    @OneToMany
-//    @JoinColumn(name = "memberEmail", referencedColumnName = "email")
-//    private List<MembershipJpo> membershipList;
+    @OneToMany
+    @JoinColumn(name = "memberEmail", referencedColumnName = "email")
+    private List<MembershipJpo> membershipList;
 
     public MemberJpo(CommunityMember member) {
         BeanUtils.copyProperties(member, this);
@@ -46,9 +46,9 @@ public class MemberJpo {
             member.getAddresses().add(address);
         }
 
-//        for (MembershipJpo membershipJpo : this.membershipList) {
-//            member.getMembershipList().add(membershipJpo.toDomain());
-//        }
+        for (MembershipJpo membershipJpo : this.membershipList) {
+            member.getMembershipList().add(membershipJpo.toDomain());
+        }
 
         return member;
     }

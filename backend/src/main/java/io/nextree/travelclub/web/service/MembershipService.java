@@ -6,10 +6,8 @@ import java.util.List;
 
 public interface MembershipService {
     void register(MembershipDto membershipDto);
-    MembershipDto find(String membershipId);
-    MembershipDto findByClubIdAndMemberId(String clubId, String memberEmail);
-    List<MembershipDto> findAllByClubId(String clubId);
-    List<MembershipDto> findAllByMemberId(String memberId);
+    MembershipDto findById(Long clubId, String memberEmail);
+    List<MembershipDto> findAllByClubIdOrMemberId(Long clubId, String memberId);
     void modify(MembershipDto clubMembershipDto);
-    void delete(String membershipId);
+    void delete(Long clubId, String memberEmail);
 }

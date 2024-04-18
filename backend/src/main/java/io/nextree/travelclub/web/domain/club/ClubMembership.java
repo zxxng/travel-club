@@ -9,23 +9,20 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ClubMembership {
-    private Long id;
-    private String clubId;
+    private Long clubId;
     public String memberEmail;
     private RoleInClub role;
     private String joinDate;
 
-    public ClubMembership(Long id, TravelClub club, CommunityMember member) {
-        this.id = id;
-        this.clubId = club.getUsid();
+    public ClubMembership(TravelClub club, CommunityMember member) {
+        this.clubId = club.getId();
         this.memberEmail = member.getEmail();
 
         this.role = RoleInClub.Member;
         this.joinDate = DateUtil.today();
     }
 
-    public ClubMembership(Long id, String clubId, String memberEmail) {
-        this.id = id;
+    public ClubMembership(Long clubId, String memberEmail) {
         this.clubId = clubId;
         this.memberEmail = memberEmail;
 
@@ -37,8 +34,7 @@ public class ClubMembership {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("[Membership] Id: ").append(id);
-        builder.append(", club Id: ").append(clubId);
+        builder.append("[Membership] club Id: ").append(clubId);
         builder.append(", member email: ").append(memberEmail);
         builder.append(", role: ").append(role.name());
         builder.append(", join date: ").append(joinDate);
@@ -47,10 +43,14 @@ public class ClubMembership {
     }
 
     public static ClubMembership getSample(TravelClub club, CommunityMember member) {
-        ClubMembership membership = new ClubMembership(1L, club, member);
+        ClubMembership membership = new ClubMembership(club, member);
         membership.setRole(RoleInClub.Member);
 
         return membership;
+    }
+
+    public String getClubIdToString() {
+        return clubId != null ? clubId.toString() : null;
     }
 
     public static void main(String[] args) {

@@ -1,8 +1,6 @@
 package io.nextree.travelclub.web.controller;
 
 import io.nextree.travelclub.web.domain.club.ClubMembership;
-import io.nextree.travelclub.web.service.ClubService;
-import io.nextree.travelclub.web.service.MemberService;
 import io.nextree.travelclub.web.service.MembershipService;
 import io.nextree.travelclub.web.service.dto.MembershipDto;
 import org.springframework.web.bind.annotation.*;
@@ -20,36 +18,20 @@ public class MembershipController {
     }
 
     @PostMapping
-    public String register(@RequestBody MembershipDto membershipDto) {
+    public Long register(@RequestBody MembershipDto membershipDto) {
         membershipService.register(membershipDto);
 
-        return membershipDto.getId().toString();
+        return membershipDto.getClubId();
     }
 
-    @GetMapping("/{membershipId}")
-    public ClubMembership find(@PathVariable String membershipId) {
-        MembershipDto foundedMembership = membershipService.find(membershipId);
-
-        return foundedMembership.toMembership();
+    @GetMapping("/{clubId}/{memberId}")
+    public MembershipDto findById(@PathVariable("clubId") Long clubId, @PathVariable("memberId") String memberId) {
+        return membershipService.findById(clubId, memberId);
     }
 
     @GetMapping
-    public ClubMembership findByClubIdAndMemberId(@RequestParam String clubId, @RequestParam String memberId) {
-        MembershipDto foundedMembership = membershipService.findByClubIdAndMemberId(clubId, memberId);
-
-        return foundedMembership.toMembership();
-    }
-
-    @GetMapping("/club/{clubId}")
-    public List<ClubMembership> findAllByClubId(@PathVariable String clubId) {
-        return membershipService.findAllByClubId(clubId).stream()
-                .map(MembershipDto::toMembership).collect(Collectors.toList());
-    }
-
-    @GetMapping("/member/{memberId}")
-    public List<ClubMembership> findAllByMemberId(@PathVariable String memberId) {
-        return membershipService.findAllByMemberId(memberId).stream()
-                .map(MembershipDto::toMembership).collect(Collectors.toList());
+    public List<MembershipDto> findAllByClubIdOrMemberId(@RequestParam(required = false) Long clubId, @RequestParam(required = false) String memberId) {
+        return membershipService.findAllByClubIdOrMemberId(clubId, memberId);
     }
 
     @PutMapping
@@ -57,8 +39,8 @@ public class MembershipController {
         membershipService.modify(clubMembershipDto);
     }
 
-    @DeleteMapping("/{membershipId}")
-    public void delete(@PathVariable String membershipId) {
-        membershipService.delete(membershipId);
+    @DeleteMapping("/{clubId}/{memberId}")
+    public void delete(@PathVariable("clubId") Long clubId, @PathVariable("memberId") String memberId) {
+        membershipService.delete(clubId, memberId);
     }
 }

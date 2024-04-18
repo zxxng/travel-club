@@ -9,15 +9,12 @@ import lombok.Setter;
 @Getter
 @Setter
 public class MembershipDto {
-    private Long id;
-    private String clubId;
+    private Long clubId;
     private String memberEmail;
-    private String memberName;
     private RoleInClub role;
     private String joinDate;
 
-    public MembershipDto(Long id, String clubId, String memberEmail) {
-        this.id = id;
+    public MembershipDto(Long clubId, String memberEmail) {
         this.clubId = clubId;
         this.memberEmail = memberEmail;
 
@@ -26,7 +23,6 @@ public class MembershipDto {
     }
 
     public MembershipDto(ClubMembership membership) {
-        this.id = membership.getId();
         this.clubId = membership.getClubId();
         this.memberEmail = membership.getMemberEmail();
         this.role = membership.getRole();
@@ -34,7 +30,7 @@ public class MembershipDto {
     }
 
     public ClubMembership toMembership() {
-        ClubMembership membership = new ClubMembership(id, clubId, memberEmail);
+        ClubMembership membership = new ClubMembership(clubId, memberEmail);
         membership.setRole(role);
         membership.setJoinDate(joinDate);
 
@@ -46,9 +42,7 @@ public class MembershipDto {
         StringBuilder builder = new StringBuilder();
 
         builder.append("Id: ").append(clubId);
-        builder.append(", club Id: ").append(clubId);
         builder.append(", member email: ").append(memberEmail);
-        builder.append(", name: ").append(memberName);
         builder.append(", role: ").append(role.name());
         builder.append(", join date: ").append(joinDate);
 

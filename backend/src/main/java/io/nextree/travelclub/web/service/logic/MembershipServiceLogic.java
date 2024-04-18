@@ -1,15 +1,14 @@
 package io.nextree.travelclub.web.service.logic;
 
 import io.nextree.travelclub.web.domain.club.ClubMembership;
-import io.nextree.travelclub.web.domain.club.CommunityMember;
-import io.nextree.travelclub.web.domain.club.TravelClub;
 import io.nextree.travelclub.web.service.MembershipService;
 import io.nextree.travelclub.web.service.dto.MembershipDto;
-import io.nextree.travelclub.web.store.ClubStore;
 import io.nextree.travelclub.web.store.MemberStore;
 import io.nextree.travelclub.web.store.MembershipStore;
+import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
 import io.nextree.travelclub.web.util.exception.MemberDuplicationException;
 import io.nextree.travelclub.web.util.exception.NoSuchMemberException;
+import io.nextree.travelclub.web.util.exception.NoSuchMembershipException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,14 +27,14 @@ public class MembershipServiceLogic implements MembershipService {
 
     @Override
     public void register(MembershipDto membershipDto) {
-        // check validate memberId
+        // memberId validation
         String memberId = membershipDto.getMemberEmail();
         Optional.ofNullable(memberStore.retrieve(memberId))
                 .orElseThrow(() -> new NoSuchMemberException("No such member with email: " + memberId));
 
-        // check memberId in club
-        String clubId = membershipDto.getClubId();
-        if (membershipStore.retrieveByClubIdAndMemberId(clubId, memberId) != null) {
+        // memberId validation in club
+        MembershipId membershipId = toMembershipId(membershipDto.getClubId(), memberId);
+        if (membershipStore.retrieveById(membershipId) != null) {
             throw new MemberDuplicationException("Member already exists in the club --> " + memberId);
         }
 
@@ -43,33 +42,30 @@ public class MembershipServiceLogic implements MembershipService {
     }
 
     @Override
-    public MembershipDto find(String membershipId) {
-        return new MembershipDto(membershipStore.retrieve(membershipId));
-    }
-
-    @Override
-    public MembershipDto findByClubIdAndMemberId(String clubId, String memberEmail) {
-        ClubMembership foundedMembership = membershipStore.retrieveByClubIdAndMemberId(clubId, memberEmail);
+    public MembershipDto findById(Long clubId, String memberEmail) {
+        MembershipId membershipId = toMembershipId(clubId, memberEmail);
+        ClubMembership foundedMembership = membershipStore.retrieveById(membershipId);
 
         return new MembershipDto(foundedMembership);
     }
 
     @Override
-    public List<MembershipDto> findAllByClubId(String clubId) {
-        List<ClubMembership> memberships = membershipStore.retrieveByClubId(clubId);
+    public List<MembershipDto> findAllByClubIdOrMemberId(Long clubId, String memberId) {
+        List<ClubMembership> memberships = null;
 
-        return memberships.stream()
-                .map(membership -> new MembershipDto(membership))
-                .collect(Collectors.toList());
-    }
+        if (clubId != null && memberId == null) {
+            memberships = membershipStore.retrieveByClubId(clubId);
+        } else if (clubId == null && memberId != null) {
+            memberships = membershipStore.retrieveByMemberId(memberId);
+        } else if (clubId != null && memberId != null) {
+            memberships = membershipStore.retrieveByClubId(clubId).stream()
+                    .filter(membership -> membership.getMemberEmail().equals(memberId))
+                    .collect(Collectors.toList());
+        } else {
+            throw new NoSuchMembershipException("Both clubId and memberId cannot be null.");
+        }
 
-    @Override
-    public List<MembershipDto> findAllByMemberId(String memberId) {
-        List<ClubMembership> memberships = membershipStore.retrieveByMemberId(memberId);
-
-        return memberships.stream()
-                .map(membership -> new MembershipDto(membership))
-                .collect(Collectors.toList());
+        return memberships.stream().map(MembershipDto::new).collect(Collectors.toList());
     }
 
     @Override
@@ -78,7 +74,11 @@ public class MembershipServiceLogic implements MembershipService {
     }
 
     @Override
-    public void delete(String membershipId) {
-        membershipStore.delete(membershipId);
+    public void delete(Long clubId, String memberEmail) {
+        membershipStore.delete(toMembershipId(clubId,memberEmail));
+    }
+
+    private MembershipId toMembershipId(Long clubId, String memberId) {
+        return new MembershipId(clubId, memberId);
     }
 }
