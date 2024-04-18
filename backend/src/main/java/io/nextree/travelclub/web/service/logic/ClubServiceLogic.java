@@ -36,21 +36,21 @@ public class ClubServiceLogic implements ClubService {
                     throw new ClubDuplicationException("Club already exists with name: " + clubName);
                 });
 
-        String clubId = clubStore.create(clubDto.toTravelClub());
-        clubDto.setId(Long.parseLong(clubId));
+        Long clubId = clubStore.create(clubDto.toTravelClub());
+        clubDto.setId(clubId);
     }
 
     @Override
-    public TravelClubDto findClub(String clubId) {
+    public TravelClubDto findClub(Long clubId) {
         return Optional.ofNullable(clubStore.retrieve(clubId))
-                .map(club -> new TravelClubDto(club))
+                .map(TravelClubDto::new)
                 .orElseThrow(() -> new NoSuchClubException("No such club with id: " + clubId));
     }
 
     @Override
     public TravelClubDto findClubByName(String name) {
         return Optional.ofNullable(clubStore.retrieveByName(name))
-                .map(club -> new TravelClubDto(club))
+                .map(TravelClubDto::new)
                 .orElseThrow(() -> new NoSuchClubException("No such club with name: " + name));
     }
 
@@ -61,8 +61,7 @@ public class ClubServiceLogic implements ClubService {
                     throw new ClubDuplicationException("Club already exists with name: " + clubName);
                 });
 
-        String targetId = clubDto.getId() != null ? clubDto.getId().toString() : null;
-        TravelClub targetClub = Optional.ofNullable(clubStore.retrieve(targetId))
+        TravelClub targetClub = Optional.ofNullable(clubStore.retrieve(clubDto.getId()))
                 .orElseThrow(() -> new NoSuchClubException("No such club with id: " + clubDto.getId()));
 
         if (StringUtil.isEmpty(clubDto.getName())) {
@@ -76,7 +75,7 @@ public class ClubServiceLogic implements ClubService {
     }
 
     @Override
-    public void remove(String clubId) {
+    public void remove(Long clubId) {
         if (!clubStore.exists(clubId)) {
             throw new NoSuchClubException("No such club with id: " + clubId);
         }

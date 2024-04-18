@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ClubRepository extends JpaRepository<TravelClubJpo, String> {
+public interface ClubRepository extends JpaRepository<TravelClubJpo, Long> {
     List<TravelClubJpo> findAllByName(String name);
 }

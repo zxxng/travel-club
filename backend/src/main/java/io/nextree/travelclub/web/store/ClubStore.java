@@ -4,11 +4,11 @@ package io.nextree.travelclub.web.store;
 import io.nextree.travelclub.web.domain.club.TravelClub;
 
 public interface ClubStore {
-    String create(TravelClub club);
-    TravelClub retrieve(String clubId);
+    Long create(TravelClub club);
+    TravelClub retrieve(Long clubId);
     TravelClub retrieveByName(String name);
     void update(TravelClub club);
-    void delete(String clubId);
+    void delete(Long clubId);
 
-    boolean exists(String clubId);
+    boolean exists(Long clubId);
 }

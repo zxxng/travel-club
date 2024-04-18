@@ -59,24 +59,6 @@ public class TravelClub {
         return club;
     }
 
-    public ClubMembership getMembershipBy(String email) {
-        if (email == null || email.isEmpty()) {
-            return null;
-        }
-
-        for (ClubMembership clubMembership : this.membershipList) {
-            if (email.equals(clubMembership.getMemberEmail())){
-                return clubMembership;
-            }
-        }
-
-        return null;
-    }
-
-    public String getIdToString() {
-        return id != null ? id.toString() : null;
-    }
-
     public static void main(String[] args) {
         TravelClub sample = TravelClub.getSample(true);
         System.out.println(sample);

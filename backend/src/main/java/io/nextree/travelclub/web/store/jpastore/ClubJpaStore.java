@@ -18,15 +18,15 @@ public class ClubJpaStore implements ClubStore {
     }
 
     @Override
-    public String create(TravelClub club) {
+    public Long create(TravelClub club) {
         TravelClubJpo clubJpo = new TravelClubJpo(club);
         clubJpo = clubRepository.save(clubJpo);
 
-        return clubJpo.getId().toString();
+        return clubJpo.getId();
     }
 
     @Override
-    public TravelClub retrieve(String clubId) {
+    public TravelClub retrieve(Long clubId) {
         Optional<TravelClubJpo> clubJpo = clubRepository.findById(clubId);
         if (!clubJpo.isPresent()) {
             throw new NoSuchClubException(String.format("TravelClub(%s) is not found.", clubId));
@@ -48,12 +48,12 @@ public class ClubJpaStore implements ClubStore {
     }
 
     @Override
-    public void delete(String clubId) {
+    public void delete(Long clubId) {
         clubRepository.deleteById(clubId);
     }
 
     @Override
-    public boolean exists(String clubId) {
+    public boolean exists(Long clubId) {
         return clubRepository.existsById(clubId);
     }
 }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public interface ClubService {
     void register(TravelClubDto clubDto);
-    TravelClubDto findClub(String clubId);
+    TravelClubDto findClub(Long clubId);
     TravelClubDto findClubByName(String name);
     void modify(TravelClubDto clubDto);
-    void remove(String clubId);
+    void remove(Long clubId);
 }

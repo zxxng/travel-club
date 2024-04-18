@@ -1,6 +1,7 @@
 package io.nextree.travelclub.web.store.jpastore.jpo;
 
 import io.nextree.travelclub.web.domain.club.TravelClub;
+import io.nextree.travelclub.web.util.helper.DateUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,18 +22,23 @@ public class TravelClubJpo {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "club_generator")
     private Long id;
 
+    @Column(unique = true)
     private String name;
+
     private String intro;
     private String foundationDay;
-
     private String boardId;
 
-//    @OneToMany
-//    @JoinColumn(name = "clubId", referencedColumnName = "id")
-//    private List<MembershipJpo> membershipList;
+    @OneToMany
+    @JoinColumn(name = "clubId", referencedColumnName = "id")
+    private List<MembershipJpo> membershipList;
 
     public TravelClubJpo(TravelClub travelClub) {
         BeanUtils.copyProperties(travelClub, this);
+
+        if (this.foundationDay == null) {
+            this.foundationDay = DateUtil.today();
+        }
     }
 
     public TravelClub toDomain() {
@@ -40,9 +46,9 @@ public class TravelClubJpo {
         travelClub.setId(this.id);
         travelClub.setFoundationDay(this.foundationDay);
 
-//        for (MembershipJpo membershipJpo : this.membershipList) {
-//            travelClub.getMembershipList().add(membershipJpo.toDomain());
-//        }
+        for (MembershipJpo membershipJpo : this.membershipList) {
+            travelClub.getMembershipList().add(membershipJpo.toDomain());
+        }
 
         return travelClub;
     }
