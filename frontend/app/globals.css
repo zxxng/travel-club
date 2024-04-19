@@ -8,6 +8,8 @@
   --accent-red: #ff6347;
   --medium-gray: #a9a9a9;
   --light-gray: #eeeeee;
+  --header-height: 40px;
+  --footer-height: 40px;
 }
 
 html,

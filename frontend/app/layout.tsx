@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { cn } from '@/util/utils';
+import { Plane } from 'lucide-react';
+import logo from '@/public/nextree_logo.svg';
+import Image from 'next/image';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,7 +23,19 @@ export default function RootLayout({
       <body
         className={cn('w-screen min-h-screen bg-primary-blue', inter.className)}
       >
-        <main className="max-w-[1220px] bg-white mx-auto">{children}</main>
+        <div className="flex flex-col max-w-[1220px] min-h-screen p-10 bg-white mx-auto text-center">
+          <header className="flex gap-1 justify-center items-center mx-auto mb-6">
+            <Plane
+              className="w-9 h-9"
+              // style={{ color: 'var(--primary-blue)' }}
+            />
+            <h1 className="text-3xl font-bold">Travel Club</h1>
+          </header>
+          <main className="grow bg-gray-300">{children}</main>
+          <footer className="w-full">
+            <Image src={logo} alt="logo" className="w-16 mx-auto mt-4" />
+          </footer>
+        </div>
       </body>
     </html>
   );
