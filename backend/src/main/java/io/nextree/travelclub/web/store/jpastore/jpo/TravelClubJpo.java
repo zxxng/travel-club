@@ -28,7 +28,7 @@ public class TravelClubJpo {
     private String intro;
     private String foundationDay;
 
-    @OneToOne(mappedBy = "club")
+    @OneToOne(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
     private BoardJpo board;
 
     @OneToMany
