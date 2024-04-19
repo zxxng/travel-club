@@ -39,13 +39,14 @@ public class PostingDto {
 
     public Posting toPostingIn(SocialBoard board) {
         Posting posting = new Posting(board, title, writerEmail, contents);
+        posting.setUsid(board.nextPostingId());
         posting.setWrittenDate(writtenDate);
         posting.setReadCount(readCount);
 
         return posting;
     }
 
-    public Posting toPostingIn(String postingId, String boardId) {
+    public Posting toPostingIn(String postingId, Long boardId) {
         Posting posting = new Posting(postingId, boardId, title, writerEmail, contents);
         posting.setWrittenDate(writtenDate);
         posting.setReadCount(readCount);

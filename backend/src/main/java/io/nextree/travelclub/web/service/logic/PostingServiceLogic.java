@@ -1,12 +1,14 @@
 package io.nextree.travelclub.web.service.logic;
 
 import io.nextree.travelclub.web.domain.board.Posting;
-import io.nextree.travelclub.web.domain.board.SocialBoard;
 import io.nextree.travelclub.web.service.PostingService;
+import io.nextree.travelclub.web.service.dto.BoardDto;
 import io.nextree.travelclub.web.service.dto.PostingDto;
 import io.nextree.travelclub.web.store.BoardStore;
 import io.nextree.travelclub.web.store.ClubStore;
+import io.nextree.travelclub.web.store.MembershipStore;
 import io.nextree.travelclub.web.store.PostingStore;
+import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
 import io.nextree.travelclub.web.util.exception.NoSuchBoardException;
 import io.nextree.travelclub.web.util.exception.NoSuchMemberException;
 import io.nextree.travelclub.web.util.exception.NoSuchPostingException;
@@ -21,19 +23,23 @@ import java.util.stream.Collectors;
 public class PostingServiceLogic implements PostingService {
     private BoardStore boardStore;
     private PostingStore postingStore;
-    private ClubStore clubStore;
+    private MembershipStore membershipStore;
 
-    public PostingServiceLogic(BoardStore boardStore, PostingStore postingStore, ClubStore clubStore) {
+    public PostingServiceLogic(BoardStore boardStore, PostingStore postingStore, MembershipStore membershipStore) {
         this.boardStore = boardStore;
         this.postingStore = postingStore;
-        this.clubStore = clubStore;
+        this.membershipStore = membershipStore;
     }
 
     @Override
-    public String register(String boardId, PostingDto postingDto) {
-        Optional.ofNullable(clubStore.retrieve(boardId))
-                .map(club -> club.getMembershipBy(postingDto.getWriterEmail()))
-                .orElseThrow(() -> new NoSuchMemberException("In the club, No such member with email: " + postingDto.getWriterEmail()));
+    public String register(Long boardId, PostingDto postingDto) {
+        if (!boardStore.exists(boardId)) {
+            throw new NoSuchBoardException("No such board whit id: " + boardId);
+        }
+
+        if (!membershipStore.exists(new MembershipId(boardId, postingDto.getWriterEmail()))) {
+            throw new NoSuchMemberException("In the club, No such member with email: " + postingDto.getWriterEmail());
+        }
 
         return Optional.ofNullable(boardStore.retrieve(boardId))
                 .map(board -> postingStore.create(postingDto.toPostingIn(board)))
@@ -51,13 +57,13 @@ public class PostingServiceLogic implements PostingService {
     }
 
     @Override
-    public List<PostingDto> findByBoardId(String boardId) {
-        Optional.ofNullable(boardStore.retrieve(boardId))
-                .orElseThrow(() -> new NoSuchBoardException("No such board whit id: " + boardId));
+    public List<PostingDto> findByBoardId(Long boardId) {
+        if (!boardStore.exists(boardId)) {
+            throw new NoSuchBoardException("No such board whit id: " + boardId);
+        }
 
         return postingStore.retrieveByBoardId(boardId).stream()
-                .map(posting -> new PostingDto(posting))
-                .collect(Collectors.toList());
+                .map(PostingDto::new).collect(Collectors.toList());
     }
 
     @Override
@@ -86,8 +92,11 @@ public class PostingServiceLogic implements PostingService {
     }
 
     @Override
-    public void removeAllIn(String boardId) {
-        postingStore.retrieveByBoardId(boardId).stream()
-                .forEach(posting -> postingStore.delete(posting.getId()));
+    public void removeAllIn(Long boardId) {
+        if (!boardStore.exists(boardId)) {
+            throw new NoSuchBoardException("No such board with id: " + boardId);
+        }
+
+        postingStore.deleteAllByBoardId(boardId);
     }
 }

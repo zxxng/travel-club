@@ -36,7 +36,7 @@ public class PostingJpaStore implements PostingStore {
     }
 
     @Override
-    public List<Posting> retrieveByBoardId(String boardId) {
+    public List<Posting> retrieveByBoardId(Long boardId) {
         List<PostingJpo> postingJpos = postingRepository.findAllByBoardId(boardId);
 
         return postingJpos.stream().map(PostingJpo::toDomain).collect(Collectors.toList());
@@ -57,6 +57,11 @@ public class PostingJpaStore implements PostingStore {
     @Override
     public void delete(String postingId) {
         postingRepository.deleteById(postingId);
+    }
+
+    @Override
+    public void deleteAllByBoardId(Long boardId) {
+        postingRepository.deleteAllByBoardId(boardId);
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Posting implements Entity {
     private String writtenDate;
     private int readCount;
 
-    private String boardId;
+    private Long boardId;
 
     private Posting() {
         this.readCount = 0;
@@ -29,14 +29,14 @@ public class Posting implements Entity {
     public Posting(SocialBoard board, String title, String writerEmail, String contents) {
         this();
         this.usid = board.nextPostingId();
-        this.boardId = board.getId();
+        this.boardId = board.getClubId();
         this.title = title;
         this.writerEmail = writerEmail;
         this.contents = contents;
         this.writtenDate = DateUtil.today();
     }
 
-    public Posting(String postingId, String boardId, String title, String writerEmail, String contents) {
+    public Posting(String postingId, Long boardId, String title, String writerEmail, String contents) {
         this.usid = postingId;
         this.boardId = boardId;
         this.title = title;

@@ -5,10 +5,10 @@ import io.nextree.travelclub.web.service.dto.PostingDto;
 import java.util.List;
 
 public interface PostingService {
-    String register(String boardId, PostingDto postingDto);
+    String register(Long boardId, PostingDto postingDto);
     PostingDto find(String postingId);
-    List<PostingDto> findByBoardId(String boardId);
+    List<PostingDto> findByBoardId(Long boardId);
     void modify(PostingDto postingDto);
     void remove(String postingId);
-    void removeAllIn(String boardId);
+    void removeAllIn(Long boardId);
 }

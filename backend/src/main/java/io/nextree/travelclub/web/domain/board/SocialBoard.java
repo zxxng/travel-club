@@ -11,11 +11,11 @@ import lombok.Setter;
 @Setter
 public class SocialBoard implements Entity {
     private Long clubId;
-    private int sequence;
 
     private String name;
     private String adminEmail;
     private String createDate;
+    private int sequence;
 
     public SocialBoard() {
         this.sequence = 1;
@@ -61,7 +61,7 @@ public class SocialBoard implements Entity {
     }
 
     public String nextPostingId() {
-        return String.format("%s:%05d", clubId, sequence++);
+        return String.format("%d:%05d", clubId, sequence++);
     }
 
     public static void main(String[] args) {
