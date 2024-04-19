@@ -12,6 +12,14 @@
   --footer-height: 40px;
 }
 
+.radix-themes {
+  --primary-blue: #6174db;
+  --base-black: #101010;
+  --accent-red: #ff6347;
+  --medium-gray: #a9a9a9;
+  --light-gray: #eeeeee;
+}
+
 html,
 body {
   background-color: var(--main-color);
