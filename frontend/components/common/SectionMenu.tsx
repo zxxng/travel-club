@@ -9,12 +9,11 @@ interface SectionMenuProps {
 
 const SectionMenu = ({ title, className, children }: SectionMenuProps) => {
   return (
-    <section className="mb-10">
+    <section className={cn('mb-10', className)}>
       <h2
-        className={cn(
-          'text-primary-blue text-xl font-semibold p-2 border-b-2 border-primary-blue mb-2',
-          className,
-        )}
+        className={
+          'text-primary-blue text-xl font-semibold p-2 border-b-[1px] border-primary-blue mb-3'
+        }
       >
         {title}
       </h2>
