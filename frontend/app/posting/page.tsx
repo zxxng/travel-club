@@ -1,7 +1,7 @@
 import React from 'react';
 
 const PostingMenuPage = () => {
-  return <div>PostingMenuPage</div>;
+  return <div></div>;
 };
 
 export default PostingMenuPage;

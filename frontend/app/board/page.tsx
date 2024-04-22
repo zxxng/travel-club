@@ -1,7 +1,7 @@
 import React from 'react';
 
 const BoardMenuPage = () => {
-  return <div>BoardMenuPage</div>;
+  return <div></div>;
 };
 
 export default BoardMenuPage;

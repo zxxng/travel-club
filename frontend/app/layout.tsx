@@ -24,8 +24,8 @@ export default function RootLayout({
         className={cn('w-screen min-h-screen bg-primary-blue', inter.className)}
       >
         <Theme className="flex">
-          <Navigator></Navigator>
-          <main className="grow bg-gray-300">{children}</main>
+          <Navigator />
+          <main className="grow px-14 py-10">{children}</main>
         </Theme>
       </body>
     </html>

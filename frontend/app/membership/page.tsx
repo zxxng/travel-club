@@ -1,7 +1,7 @@
 import React from 'react';
 
 const MembershipMenuPage = () => {
-  return <div>MembershipMenuPage</div>;
+  return <div></div>;
 };
 
 export default MembershipMenuPage;

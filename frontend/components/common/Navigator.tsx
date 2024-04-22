@@ -16,16 +16,18 @@ const Navigator = () => {
       <ul className="text-xl font-semibold text-center">
         {menuList.map((menu) => {
           return (
-            <li
-              key={menu}
-              className="py-4 hover:py-5 hover:bg-white hover:text-black transition"
-            >
-              <Link href={`/${menu}`}>{menu}</Link>
+            <li key={menu}>
+              <Link
+                href={`/${menu.toLocaleLowerCase()}`}
+                className="block py-4 hover:py-5 hover:bg-white hover:text-black transition"
+              >
+                {menu}
+              </Link>
             </li>
           );
         })}
       </ul>
-      <div className="min-w-72 w-1/4 absolute bottom-7">
+      <div className="w-full absolute bottom-7">
         <Image src={logo} alt="logo" className="w-16 mx-auto" />
       </div>
     </nav>
