@@ -5,6 +5,7 @@ import { cn } from '@/util/utils';
 import '@radix-ui/themes/styles.css';
 import { Theme } from '@radix-ui/themes';
 import Navigator from '@/components/common/Navigator';
+import ReactQueryProviders from '@/util/ReactQueryProviders';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,10 +24,12 @@ export default function RootLayout({
       <body
         className={cn('w-screen min-h-screen bg-primary-blue', inter.className)}
       >
-        <Theme className="flex">
-          <Navigator />
-          <main className="grow px-14 py-10">{children}</main>
-        </Theme>
+        <ReactQueryProviders>
+          <Theme className="flex">
+            <Navigator />
+            <main className="grow px-14 py-10">{children}</main>
+          </Theme>
+        </ReactQueryProviders>
       </body>
     </html>
   );
