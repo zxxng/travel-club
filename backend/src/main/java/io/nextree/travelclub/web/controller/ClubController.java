@@ -24,13 +24,13 @@ public class ClubController {
     }
 
     @GetMapping("/{clubId}")
-    public TravelClub find(@PathVariable Long clubId) {
-        return clubService.findClub(clubId).toTravelClub();
+    public TravelClubDto find(@PathVariable Long clubId) {
+        return clubService.findClub(clubId);
     }
 
     @GetMapping // localhost:8080/club?name=JavaClub
-    public TravelClub findByName(@RequestParam String name) {
-        return clubService.findClubByName(name).toTravelClub();
+    public TravelClubDto findByName(@RequestParam String name) {
+        return clubService.findClubByName(name);
     }
 
     @PutMapping
