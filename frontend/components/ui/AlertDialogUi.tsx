@@ -3,18 +3,25 @@ import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 
 interface AlertDialogUiProps {
   message: string;
-  onClick: () => void;
+  children: React.ReactNode;
+  handleRemove: () => void;
 }
 
-const AlertDialogUi = ({ message, onClick }: AlertDialogUiProps) => {
+const AlertDialogUi = ({
+  message,
+  children,
+  handleRemove,
+}: AlertDialogUiProps) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
         <Button color="red">Remove</Button>
       </AlertDialog.Trigger>
       <AlertDialog.Content maxWidth="450px">
-        <AlertDialog.Title>Rmove</AlertDialog.Title>
+        <AlertDialog.Title>Remove</AlertDialog.Title>
         <AlertDialog.Description size="2">{message}</AlertDialog.Description>
+
+        {children}
 
         <Flex gap="3" mt="4" justify="end">
           <AlertDialog.Cancel>
@@ -23,7 +30,7 @@ const AlertDialogUi = ({ message, onClick }: AlertDialogUiProps) => {
             </Button>
           </AlertDialog.Cancel>
           <AlertDialog.Action>
-            <Button variant="solid" color="red" onClick={onClick}>
+            <Button variant="solid" color="red" onClick={handleRemove}>
               Remove
             </Button>
           </AlertDialog.Action>

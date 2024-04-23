@@ -8,7 +8,7 @@ interface CalloutUiProps {
 
 const CalloutUi = ({ message }: CalloutUiProps) => {
   return (
-    <Callout.Root>
+    <Callout.Root className="my-3">
       <Callout.Icon>
         <Info />
       </Callout.Icon>
