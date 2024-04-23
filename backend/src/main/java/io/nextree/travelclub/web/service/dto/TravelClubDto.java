@@ -17,10 +17,10 @@ public class TravelClubDto {
     private String intro;
     private String foundationDay;
 
-    private List<MembershipDto> membershipDtoList;
+    private List<MembershipDto> membershipList;
 
     private TravelClubDto() {
-        this.membershipDtoList = new ArrayList<MembershipDto>();
+        this.membershipList = new ArrayList<MembershipDto>();
     }
 
     public TravelClubDto(String name, String intro) {
@@ -38,7 +38,7 @@ public class TravelClubDto {
         this.foundationDay = club.getFoundationDay();
 
         for (ClubMembership membership : club.getMembershipList()) {
-            this.membershipDtoList.add(new MembershipDto(membership));
+            this.membershipList.add(new MembershipDto(membership));
         }
     }
 
@@ -47,7 +47,7 @@ public class TravelClubDto {
         travelClub.setId(id);
         travelClub.setFoundationDay(foundationDay);
 
-        for (MembershipDto membershipDto : membershipDtoList) {
+        for (MembershipDto membershipDto : membershipList) {
             travelClub.getMembershipList().add(membershipDto.toMembership());
         }
 
@@ -65,7 +65,7 @@ public class TravelClubDto {
         builder.append("\n");
 
         int i = 0;
-        for (MembershipDto membership : membershipDtoList) {
+        for (MembershipDto membership : membershipList) {
             builder.append(" ["+ i +"] Club's member: ").append(membership.toString()).append("\n");
             i++;
         }
