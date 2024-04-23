@@ -2,10 +2,10 @@
 
 import React from 'react';
 import Header from '@/components/common/Header';
+import SectionMenu from '@/components/common/SectionMenu';
 import ClubDialog from '@/components/dialog/ClubDialog';
 import SearchBar from '@/components/common/SearchBar';
 import ClubTable from '@/components/table/ClubTable';
-import SectionMenu from '@/components/common/SectionMenu';
 
 const ClubMenuPage = () => {
   return (
@@ -14,7 +14,7 @@ const ClubMenuPage = () => {
         <Header.Title title="Club Menu" />
       </Header>
       <SectionMenu title="Register">
-        <ClubDialog />
+        <ClubDialog.Regist />
       </SectionMenu>
       <SearchBar
         title="Find a Club Name"
