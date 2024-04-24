@@ -5,8 +5,8 @@ import useApiMutation from '@/hooks/useApiMutation';
 import { type Member, type RequestData } from '@/types/apiResponse';
 import RemoveDialog from './RemoveDialog';
 import DialogUi from '@/components/ui/DialogUi';
-import Form from '@/components/common/Form';
-import Input from '@/components/common/Input';
+import Form from '@/components/dialog/Form';
+import Input from '@/components/dialog/Input';
 
 interface MemberDialogProps {
   url: string;
