@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { Spinner } from '@radix-ui/themes';
 import CalloutUi from '@/components/ui/CalloutUi';
-import { UseMutationResult } from '@tanstack/react-query';
+import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import { Club } from '@/types/apiResponse';
 
 interface AlertDialogUiProps {
@@ -13,8 +13,11 @@ interface AlertDialogUiProps {
 }
 
 const AlertDialogUi = ({ message, mutation }: AlertDialogUiProps) => {
+  const queryClient = useQueryClient();
   const handleRemove = () => {
-    mutation.mutate({});
+    mutation.mutate('', {
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get'] }),
+    });
   };
 
   useEffect(() => {

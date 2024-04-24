@@ -26,9 +26,8 @@ const ClubDialog = ({
   infoMessage,
 }: ClubDialogProps) => {
   const mutation = useApiMutation<Club>(url, method, {
-    onSuccess: (data) => console.log(`${dialogTitle} successfully:`, data),
-    onError: (error) =>
-      console.error(`Error during ${dialogTitle.toLowerCase()}:`, error),
+    onSuccess: (data) => console.log('successfully:', data),
+    onError: (error) => console.error(error),
   });
 
   if (method === 'DELETE' && infoMessage)

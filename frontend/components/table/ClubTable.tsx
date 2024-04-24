@@ -17,6 +17,7 @@ const ClubTable = () => {
     error,
     isLoading,
   } = useApiQuery<Club>(`/club?name=${keyword}`, {
+    queryKey: ['get'],
     enabled: keyword != null,
     retry: 1,
   });

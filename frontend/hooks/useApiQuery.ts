@@ -7,7 +7,7 @@ import {
 // GET 요청에서 활용하는 hook
 const useApiQuery = <Data = unknown>(
   queryParam: string,
-  options?: Omit<UseQueryOptions<Data, Error>, 'queryKey'>,
+  options?: UseQueryOptions<Data, Error>,
 ): UseQueryResult<Data, Error> => {
   const queryFn = async () => {
     try {

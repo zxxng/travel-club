@@ -11,7 +11,7 @@ import {
 import { Club, type RequestData } from '@/types/apiResponse';
 import { Spinner } from '@radix-ui/themes';
 import CalloutUi from '@/components/ui/CalloutUi';
-import { UseMutationResult } from '@tanstack/react-query';
+import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
 
 interface DialogProps {
   initialValue: RequestData;
@@ -24,6 +24,7 @@ interface DialogProps {
 }
 
 const Form = ({ initialValue, mutation, children }: DialogProps) => {
+  const queryClient = useQueryClient();
   const {
     control,
     handleSubmit,
@@ -33,8 +34,9 @@ const Form = ({ initialValue, mutation, children }: DialogProps) => {
   });
 
   const onSubmit: SubmitHandler<RequestData> = (data) => {
-    console.log(data);
-    mutation.mutate(data);
+    mutation.mutate(data, {
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get'] }),
+    });
   };
 
   useEffect(() => {
