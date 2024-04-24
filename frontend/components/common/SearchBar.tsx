@@ -1,23 +1,32 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { TextField, IconButton } from '@radix-ui/themes';
 import { Search } from 'lucide-react';
 import SelectUi from '../ui/SelectUi';
-import { useSetAtom } from 'jotai';
-import { keywordAtom } from '@/atom/searchAtom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { keywordAtom, selectAtom } from '@/atom/searchAtom';
 
-const SearchBar = () => {
+interface SearchBarProps {
+  selectList: string[];
+}
+
+const SearchBar = ({ selectList }: SearchBarProps) => {
   const setKeyword = useSetAtom(keywordAtom);
+  const select = useAtomValue(selectAtom);
   const keywordRef = useRef<HTMLInputElement>(null);
 
   const handleKeyword = () => {
     setKeyword(keywordRef.current?.value || '');
   };
 
+  useEffect(() => {
+    setKeyword('');
+  }, [select]);
+
   return (
     <div className="flex gap-2">
-      <SelectUi list={['ID', 'Name']} />
+      <SelectUi list={selectList} />
       <TextField.Root
         ref={keywordRef}
         placeholder="Please enter keyword..."

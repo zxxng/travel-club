@@ -6,7 +6,7 @@ import { type Member } from '@/types/apiResponse';
 import useApiQuery from '@/hooks/useApiQuery';
 import CalloutUi from '../ui/CalloutUi';
 import SkeletonUi from '../ui/SkeletonUi';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { keywordAtom, queryKeyAtom, selectAtom } from '@/atom/searchAtom';
 import MembershipTable from './MembershipTable';
 import MemberDialog from '../dialog/MemberDialog';
@@ -32,14 +32,19 @@ const MemberInfo = ({ memberData }: { memberData: Member }) => {
 };
 
 const MemberTable = () => {
-  const keyword = useAtomValue(keywordAtom);
-  const select = useAtomValue(selectAtom);
+  const [keyword, setKeyword] = useAtom(keywordAtom);
+  const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/member${select === 'id' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url = `/member${select === 'Email' ? `/${keyword}` : `?name=${keyword}`}`;
 
   useEffect(() => {
     setQueryKey(['get', url]);
   }, [url]);
+
+  useEffect(() => {
+    setKeyword('');
+    setSelect('Email');
+  }, []);
 
   const {
     data: memberData,
@@ -54,7 +59,6 @@ const MemberTable = () => {
   if (isLoading) return <SkeletonUi />;
   if (error) return <CalloutUi message={`${error.message}`} className="mt-5" />;
 
-  console.log(memberData);
   return (
     <>
       {memberData ? (
@@ -85,9 +89,11 @@ const MemberTable = () => {
             )}
           </Table.Root>
 
-          {select === 'id' && memberData.membershipDtoList.length != 0 && (
-            <MembershipTable membershipList={memberData.membershipDtoList} />
-          )}
+          {!Array.isArray(memberData) &&
+            memberData.membershipDtoList &&
+            memberData.membershipDtoList.length != 0 && (
+              <MembershipTable membershipList={memberData.membershipDtoList} />
+            )}
         </>
       ) : null}
     </>

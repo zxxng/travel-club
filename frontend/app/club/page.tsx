@@ -19,7 +19,7 @@ const ClubMenuPage = () => {
       </SectionMenu>
 
       <SectionMenu title="Find Club">
-        <SearchBar />
+        <SearchBar selectList={['ID', 'Name']} />
         <ClubTable />
       </SectionMenu>
     </>

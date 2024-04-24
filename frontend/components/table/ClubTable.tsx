@@ -2,23 +2,29 @@
 
 import React, { useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
-import { type Club, type Membership } from '@/types/apiResponse';
+import { type Club } from '@/types/apiResponse';
 import ClubDialog from '../dialog/ClubDialog';
 import useApiQuery from '@/hooks/useApiQuery';
 import CalloutUi from '../ui/CalloutUi';
 import SkeletonUi from '../ui/SkeletonUi';
-import { useAtomValue, useAtom } from 'jotai';
+import { useAtom } from 'jotai';
 import { keywordAtom, queryKeyAtom, selectAtom } from '@/atom/searchAtom';
+import MembershipTable from './MembershipTable';
 
 const ClubTable = () => {
-  const keyword = useAtomValue(keywordAtom);
-  const select = useAtomValue(selectAtom);
+  const [keyword, setKeyword] = useAtom(keywordAtom);
+  const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/club${select === 'id' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url = `/club${select === 'ID' ? `/${keyword}` : `?name=${keyword}`}`;
 
   useEffect(() => {
     setQueryKey(['get', url]);
   }, [url]);
+
+  useEffect(() => {
+    setKeyword('');
+    setSelect('ID');
+  }, []);
 
   const {
     data: clubData,
@@ -68,41 +74,8 @@ const ClubTable = () => {
           </Table.Root>
 
           {/* membership */}
-          {clubData.membershipList.length != 0 && (
-            <>
-              <h3 className="text-medium-gray text-lg font-semibold mt-5 px-2">
-                Membership List
-              </h3>
-              <Table.Root>
-                <Table.Header>
-                  <Table.Row>
-                    <Table.ColumnHeaderCell>Club ID</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>
-                      Member Email
-                    </Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
-                    <Table.ColumnHeaderCell>Join Date</Table.ColumnHeaderCell>
-                  </Table.Row>
-                </Table.Header>
-
-                <Table.Body>
-                  {clubData.membershipList.map(
-                    (membership: Membership, index: number) => {
-                      return (
-                        <Table.Row key={index}>
-                          <Table.RowHeaderCell>
-                            {membership.clubId}
-                          </Table.RowHeaderCell>
-                          <Table.Cell>{membership.memberEmail}</Table.Cell>
-                          <Table.Cell>{membership.role}</Table.Cell>
-                          <Table.Cell>{membership.joinDate}</Table.Cell>
-                        </Table.Row>
-                      );
-                    },
-                  )}
-                </Table.Body>
-              </Table.Root>
-            </>
+          {clubData.membershipList && clubData.membershipList.length != 0 && (
+            <MembershipTable membershipList={clubData.membershipList} />
           )}
         </>
       ) : null}

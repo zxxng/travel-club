@@ -19,7 +19,7 @@ const MemberMenuPage = () => {
       </SectionMenu>
 
       <SectionMenu title="Find Member">
-        <SearchBar />
+        <SearchBar selectList={['Email', 'Name']} />
         <MemberTable />
       </SectionMenu>
     </>
