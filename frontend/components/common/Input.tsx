@@ -28,7 +28,7 @@ const Input = ({ control, dataKey, rules, errors }: InputUiProps) => {
         render={({ field }) => (
           <TextField.Root
             id={dataKey}
-            placeholder={`Enter club ${dataKey}`}
+            placeholder={`Enter ${dataKey}`}
             {...field}
           />
         )}
@@ -75,7 +75,47 @@ const ClubIntroInput = ({ control, errors }: InputProps) => {
   );
 };
 
+const MemberEmailInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input
+      control={control}
+      errors={errors}
+      dataKey="email"
+      rules={{
+        required: `Please enter member email.`,
+      }}
+    />
+  );
+};
+
+const MemberNameInput = ({ control, errors }: InputProps) => {
+  return <Input control={control} errors={errors} dataKey="name" rules={{}} />;
+};
+
+const MemberNickNameInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input control={control} errors={errors} dataKey="nickName" rules={{}} />
+  );
+};
+
+const MemberPhoneNumberInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input control={control} errors={errors} dataKey="phoneNumber" rules={{}} />
+  );
+};
+
+const MemberBirthdayInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input control={control} errors={errors} dataKey="birthDay" rules={{}} />
+  );
+};
+
 Input.ClubName = ClubNameInput;
 Input.ClubIntro = ClubIntroInput;
+Input.MemberEmail = MemberEmailInput;
+Input.MemberName = MemberNameInput;
+Input.MemberNickName = MemberNickNameInput;
+Input.MemberPhoneNumber = MemberPhoneNumberInput;
+Input.MemberBirthDay = MemberBirthdayInput;
 
 export default Input;

@@ -1,7 +1,29 @@
+'use client';
+
 import React from 'react';
+import Header from '@/components/common/Header';
+import SearchBar from '@/components/common/SearchBar';
+import SectionMenu from '@/components/common/SectionMenu';
+import MemberDialog from '@/components/dialog/MemberDialog';
+import MemberTable from '@/components/table/MemberTable';
 
 const MemberMenuPage = () => {
-  return <div></div>;
+  return (
+    <>
+      <Header>
+        <Header.Title title="Member Menu" />
+      </Header>
+
+      <SectionMenu title="Register">
+        <MemberDialog.Regist />
+      </SectionMenu>
+
+      <SectionMenu title="Find a Member">
+        <SearchBar />
+        <MemberTable />
+      </SectionMenu>
+    </>
+  );
 };
 
 export default MemberMenuPage;

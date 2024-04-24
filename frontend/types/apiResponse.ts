@@ -14,3 +14,21 @@ export interface Club {
   foundationDay: string;
   membershipList: Membership[];
 }
+
+export interface Address {
+  zipCode: string;
+  zipAddress: string;
+  streetAddress: string;
+  country: string;
+  addressType: 'Home' | 'Office';
+}
+
+export interface Member {
+  email: string;
+  name: string;
+  nickName: string;
+  phoneNumber: string;
+  birthDay: string;
+  addresses: Address[];
+  membershipDtoList: Membership[];
+}
