@@ -12,7 +12,7 @@ interface AlertDialogUiProps {
   mutation: UseMutationResult<Club, Error, unknown, unknown>;
 }
 
-const AlertDialogUi = ({ message, mutation }: AlertDialogUiProps) => {
+const RemoveDialog = ({ message, mutation }: AlertDialogUiProps) => {
   const queryClient = useQueryClient();
   const handleRemove = () => {
     mutation.mutate('', {
@@ -67,4 +67,4 @@ const AlertDialogUi = ({ message, mutation }: AlertDialogUiProps) => {
   );
 };
 
-export default AlertDialogUi;
+export default RemoveDialog;

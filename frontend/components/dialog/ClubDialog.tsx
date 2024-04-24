@@ -3,7 +3,7 @@
 import React from 'react';
 import useApiMutation from '@/hooks/useApiMutation';
 import { type Club, type RequestData } from '@/types/apiResponse';
-import AlertDialogUi from '../ui/AlertDialogUi';
+import RemoveDialog from './RemoveDialog';
 import DialogUi from '../ui/DialogUi';
 import Form from '@/components/common/Form';
 import Input from '@/components/common/Input';
@@ -31,7 +31,7 @@ const ClubDialog = ({
   });
 
   if (method === 'DELETE' && infoMessage)
-    return <AlertDialogUi message={infoMessage} mutation={mutation} />;
+    return <RemoveDialog message={infoMessage} mutation={mutation} />;
 
   return (
     <DialogUi
@@ -86,7 +86,7 @@ const ClubRemoveDialog = ({ clubData }: { clubData: Club }) => {
       url={`/club/${clubData.id}`}
       method="DELETE"
       initialValues={{}}
-      dialogTitle="Removing club"
+      dialogTitle="Club Deletion"
       buttonText="Remove"
       infoMessage={`Removing club -> [id] ${clubData.id}, [name] ${clubData.name}`}
     />
