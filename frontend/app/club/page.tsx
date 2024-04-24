@@ -9,19 +9,20 @@ import ClubTable from '@/components/table/ClubTable';
 
 const ClubMenuPage = () => {
   return (
-    <div>
+    <>
       <Header>
         <Header.Title title="Club Menu" />
       </Header>
+
       <SectionMenu title="Register">
         <ClubDialog.Regist />
       </SectionMenu>
-      <SearchBar
-        title="Find a Club Name"
-        placeholder="Search the Club name..."
-      />
-      <ClubTable />
-    </div>
+
+      <SectionMenu title="Find a Club">
+        <SearchBar />
+        <ClubTable />
+      </SectionMenu>
+    </>
   );
 };
 

@@ -1,35 +1,46 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Table } from '@radix-ui/themes';
-import { useSearchParams } from 'next/navigation';
 import { type Club, type Membership } from '@/types/apiResponse';
 import ClubDialog from '../dialog/ClubDialog';
 import useApiQuery from '@/hooks/useApiQuery';
 import CalloutUi from '../ui/CalloutUi';
 import SkeletonUi from '../ui/SkeletonUi';
+import { useAtomValue, useAtom } from 'jotai';
+import { keywordAtom, queryKeyAtom, selectAtom } from '@/atom/searchAtom';
 
 const ClubTable = () => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get('keyword');
+  const keyword = useAtomValue(keywordAtom);
+  const select = useAtomValue(selectAtom);
+  const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
+  const url = `/club${select === 'id' ? `/${keyword}` : `?name=${keyword}`}`;
+
+  useEffect(() => {
+    setQueryKey(['get', url]);
+  }, [url]);
+
   const {
     data: clubData,
     error,
     isLoading,
-  } = useApiQuery<Club>(`/club?name=${keyword}`, {
-    queryKey: ['get'],
-    enabled: keyword != null,
+  } = useApiQuery<Club>(url, {
+    queryKey: queryKey,
+    enabled: keyword != '',
     retry: 1,
   });
 
   if (isLoading) return <SkeletonUi />;
-  if (error) return <CalloutUi message={`${error.message}`} />;
+  if (error) return <CalloutUi message={`${error.message}`} className="mt-5" />;
 
   return (
     <>
       {clubData ? (
         <>
-          <Table.Root className="mb-5">
+          <h3 className="text-medium-gray text-lg font-semibold mt-5 px-2">
+            Club List
+          </h3>
+          <Table.Root>
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeaderCell>Club ID</Table.ColumnHeaderCell>
@@ -57,34 +68,41 @@ const ClubTable = () => {
           </Table.Root>
 
           {/* membership */}
-          {clubData.membershipList && (
-            <Table.Root>
-              <Table.Header>
-                <Table.Row>
-                  <Table.ColumnHeaderCell>Club ID</Table.ColumnHeaderCell>
-                  <Table.ColumnHeaderCell>Member Email</Table.ColumnHeaderCell>
-                  <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
-                  <Table.ColumnHeaderCell>Join Date</Table.ColumnHeaderCell>
-                </Table.Row>
-              </Table.Header>
+          {clubData.membershipList.length != 0 && (
+            <>
+              <h3 className="text-medium-gray text-lg font-semibold mt-5 px-2">
+                Membership List
+              </h3>
+              <Table.Root>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.ColumnHeaderCell>Club ID</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>
+                      Member Email
+                    </Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
+                    <Table.ColumnHeaderCell>Join Date</Table.ColumnHeaderCell>
+                  </Table.Row>
+                </Table.Header>
 
-              <Table.Body>
-                {clubData.membershipList.map(
-                  (membership: Membership, index: number) => {
-                    return (
-                      <Table.Row key={index}>
-                        <Table.RowHeaderCell>
-                          {membership.clubId}
-                        </Table.RowHeaderCell>
-                        <Table.Cell>{membership.memberEmail}</Table.Cell>
-                        <Table.Cell>{membership.role}</Table.Cell>
-                        <Table.Cell>{membership.joinDate}</Table.Cell>
-                      </Table.Row>
-                    );
-                  },
-                )}
-              </Table.Body>
-            </Table.Root>
+                <Table.Body>
+                  {clubData.membershipList.map(
+                    (membership: Membership, index: number) => {
+                      return (
+                        <Table.Row key={index}>
+                          <Table.RowHeaderCell>
+                            {membership.clubId}
+                          </Table.RowHeaderCell>
+                          <Table.Cell>{membership.memberEmail}</Table.Cell>
+                          <Table.Cell>{membership.role}</Table.Cell>
+                          <Table.Cell>{membership.joinDate}</Table.Cell>
+                        </Table.Row>
+                      );
+                    },
+                  )}
+                </Table.Body>
+              </Table.Root>
+            </>
           )}
         </>
       ) : null}

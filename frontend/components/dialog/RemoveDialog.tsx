@@ -5,18 +5,21 @@ import { AlertDialog, Button, Flex } from '@radix-ui/themes';
 import { Spinner } from '@radix-ui/themes';
 import CalloutUi from '@/components/ui/CalloutUi';
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
-import { Club } from '@/types/apiResponse';
+import { useAtomValue } from 'jotai';
+import { queryKeyAtom } from '@/atom/searchAtom';
 
 interface AlertDialogUiProps {
   message: string;
-  mutation: UseMutationResult<Club, Error, unknown, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mutation: UseMutationResult<any, Error, unknown, unknown>;
 }
 
 const RemoveDialog = ({ message, mutation }: AlertDialogUiProps) => {
+  const queryKey = useAtomValue(queryKeyAtom);
   const queryClient = useQueryClient();
   const handleRemove = () => {
     mutation.mutate('', {
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get'] }),
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey }),
     });
   };
 

@@ -8,14 +8,17 @@ import {
   type Control,
   type FieldErrors,
 } from 'react-hook-form';
-import { Club, type RequestData } from '@/types/apiResponse';
+import { type RequestData } from '@/types/apiResponse';
 import { Spinner } from '@radix-ui/themes';
 import CalloutUi from '@/components/ui/CalloutUi';
 import { UseMutationResult, useQueryClient } from '@tanstack/react-query';
+import { useAtomValue } from 'jotai';
+import { queryKeyAtom } from '@/atom/searchAtom';
 
 interface DialogProps {
   initialValue: RequestData;
-  mutation: UseMutationResult<Club, Error, unknown, unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  mutation: UseMutationResult<any, Error, unknown, unknown>;
   children: (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<RequestData, any>,
@@ -24,6 +27,7 @@ interface DialogProps {
 }
 
 const Form = ({ initialValue, mutation, children }: DialogProps) => {
+  const queryKey = useAtomValue(queryKeyAtom);
   const queryClient = useQueryClient();
   const {
     control,
@@ -34,8 +38,9 @@ const Form = ({ initialValue, mutation, children }: DialogProps) => {
   });
 
   const onSubmit: SubmitHandler<RequestData> = (data) => {
+    console.log(data);
     mutation.mutate(data, {
-      onSuccess: () => queryClient.invalidateQueries({ queryKey: ['get'] }),
+      onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey }),
     });
   };
 

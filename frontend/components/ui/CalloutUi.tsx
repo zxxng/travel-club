@@ -1,14 +1,16 @@
 import React from 'react';
 import { Callout } from '@radix-ui/themes';
 import { Info } from 'lucide-react';
+import { cn } from '@/util/utils';
 
 interface CalloutUiProps {
   message: string;
+  className?: string;
 }
 
-const CalloutUi = ({ message }: CalloutUiProps) => {
+const CalloutUi = ({ message, className }: CalloutUiProps) => {
   return (
-    <Callout.Root className="my-3">
+    <Callout.Root className={cn('my-3', className)}>
       <Callout.Icon>
         <Info />
       </Callout.Icon>
