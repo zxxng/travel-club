@@ -30,5 +30,12 @@ export interface Member {
   phoneNumber: string;
   birthDay: string;
   addresses: Address[];
-  membershipDtoList: Membership[];
+  membershipList: Membership[];
+}
+
+export interface Board {
+  clubId: number;
+  name: string;
+  adminEmail: string;
+  createDate: string;
 }
