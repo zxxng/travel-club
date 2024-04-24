@@ -14,11 +14,11 @@ const MemberMenuPage = () => {
         <Header.Title title="Member Menu" />
       </Header>
 
-      <SectionMenu title="Register">
+      <SectionMenu title="Register Member">
         <MemberDialog.Regist />
       </SectionMenu>
 
-      <SectionMenu title="Find a Member">
+      <SectionMenu title="Find Member">
         <SearchBar />
         <MemberTable />
       </SectionMenu>
