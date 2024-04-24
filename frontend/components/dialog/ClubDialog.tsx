@@ -1,12 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
-import DialogUi from '../ui/DialogUi';
-import AlertDialogUi from '../ui/AlertDialogUi';
-import { Spinner } from '@radix-ui/themes';
+import React from 'react';
 import useApiMutation from '@/hooks/useApiMutation';
-import CalloutUi from '../ui/CalloutUi';
 import { type Club, type RequestData } from '@/types/apiResponse';
+import AlertDialogUi from '../ui/AlertDialogUi';
+import DialogUi from '../ui/DialogUi';
+import Form from '@/components/common/Form';
+import Input from '@/components/common/Input';
 
 interface ClubDialogProps {
   url: string;
@@ -25,34 +25,14 @@ const ClubDialog = ({
   buttonText,
   infoMessage,
 }: ClubDialogProps) => {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
-  const { mutate, error, isPending } = useApiMutation<Club>(url, method, {
-    onSuccess: (data) => {
-      console.log(`${dialogTitle} successfully:`, data);
-      setIsSuccess(true);
-    },
-    onError: (error) => {
-      console.error(`Error during ${dialogTitle.toLowerCase()}:`, error);
-    },
-    retry: 1,
+  const mutation = useApiMutation<Club>(url, method, {
+    onSuccess: (data) => console.log(`${dialogTitle} successfully:`, data),
+    onError: (error) =>
+      console.error(`Error during ${dialogTitle.toLowerCase()}:`, error),
   });
 
-  const handleRemove = () => {
-    mutate({});
-  };
-
   if (method === 'DELETE' && infoMessage)
-    return (
-      <AlertDialogUi message={infoMessage} handleRemove={handleRemove}>
-        {isPending && <Spinner className="mx-auto" size="3" />}
-        {error && <CalloutUi message={error.message} />}
-        {isSuccess && <CalloutUi message="Success!" />}
-      </AlertDialogUi>
-    );
-
-  const handleRequest = (data: RequestData) => {
-    mutate(data);
-  };
+    return <AlertDialogUi message={infoMessage} mutation={mutation} />;
 
   return (
     <DialogUi
@@ -60,13 +40,15 @@ const ClubDialog = ({
         title: dialogTitle,
         btnType: buttonText,
       }}
-      isSuccess={isSuccess}
-      initialValue={initialValues}
-      handleRequest={handleRequest}
     >
-      {isPending && <Spinner className="mx-auto" size="3" />}
-      {error && <CalloutUi message={error.message} />}
-      {isSuccess && <CalloutUi message="Success!" />}
+      <Form initialValue={initialValues} mutation={mutation}>
+        {(control, errors) => (
+          <>
+            <Input.ClubName control={control} errors={errors} />
+            <Input.ClubIntro control={control} errors={errors} />
+          </>
+        )}
+      </Form>
     </DialogUi>
   );
 };
@@ -83,20 +65,16 @@ const ClubRegistDialog = () => {
   );
 };
 
-const ClubModifyDialog = ({
-  id,
-  name,
-  intro,
-}: {
-  id: number;
-  name: string;
-  intro: string;
-}) => {
+const ClubModifyDialog = ({ clubData }: { clubData: Club }) => {
   return (
     <ClubDialog
       url="/club"
       method="PUT"
-      initialValues={{ id, name, intro }}
+      initialValues={{
+        id: clubData.id,
+        name: clubData.name,
+        intro: clubData.intro,
+      }}
       dialogTitle="Club Modification"
       buttonText="Modify"
     />

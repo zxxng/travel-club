@@ -47,11 +47,7 @@ const ClubTable = () => {
                 <Table.Cell>{clubData.foundationDay}</Table.Cell>
                 <Table.Cell>
                   <div className="flex gap-1">
-                    <ClubDialog.Modify
-                      id={clubData.id}
-                      name={clubData.name}
-                      intro={clubData.intro}
-                    />
+                    <ClubDialog.Modify clubData={clubData} />
                     <ClubDialog.Delete clubData={clubData} />
                   </div>
                 </Table.Cell>

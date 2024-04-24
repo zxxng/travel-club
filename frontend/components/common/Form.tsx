@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Dialog, Flex, Button } from '@radix-ui/themes';
 import {
   useForm,
@@ -17,13 +17,13 @@ interface DialogProps {
   initialValue: RequestData;
   mutation: UseMutationResult<Club, Error, unknown, unknown>;
   children: (
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: Control<RequestData, any>,
     errors: FieldErrors<RequestData>,
   ) => React.ReactNode;
 }
 
 const Form = ({ initialValue, mutation, children }: DialogProps) => {
-  const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -34,13 +34,10 @@ const Form = ({ initialValue, mutation, children }: DialogProps) => {
 
   const onSubmit: SubmitHandler<RequestData> = (data) => {
     console.log(data);
-    mutation.mutate(data, {
-      onSuccess: () => setIsSuccess(true),
-    });
+    mutation.mutate(data);
   };
 
   useEffect(() => {
-    setIsSuccess(false);
     mutation.reset();
   }, []);
 
@@ -52,12 +49,12 @@ const Form = ({ initialValue, mutation, children }: DialogProps) => {
 
       {mutation.isPending && <Spinner className="mx-auto my-2" size="3" />}
       {mutation.error && <CalloutUi message={mutation.error.message} />}
-      {isSuccess && <CalloutUi message="Success!" />}
+      {mutation.isSuccess && <CalloutUi message="Success!" />}
 
       <Flex gap="3" mt="4" justify="end">
-        {isSuccess ? (
+        {mutation.isSuccess ? (
           <Dialog.Close>
-            <Button>Close</Button>
+            <Button variant="soft">Close</Button>
           </Dialog.Close>
         ) : (
           <>
