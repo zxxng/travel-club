@@ -14,7 +14,7 @@ interface ClubDialogProps {
   initialValues: RequestData;
   dialogTitle: string;
   buttonText: string;
-  clubData?: Club;
+  infoMessage?: string;
 }
 
 const ClubDialog = ({
@@ -23,7 +23,7 @@ const ClubDialog = ({
   initialValues,
   dialogTitle,
   buttonText,
-  clubData,
+  infoMessage,
 }: ClubDialogProps) => {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const { mutate, error, isPending } = useApiMutation<Club>(url, method, {
@@ -41,12 +41,9 @@ const ClubDialog = ({
     mutate({});
   };
 
-  if (method === 'DELETE' && clubData)
+  if (method === 'DELETE' && infoMessage)
     return (
-      <AlertDialogUi
-        message={`Removing club -> [id] ${clubData.id}, [name] ${clubData.name}`}
-        handleRemove={handleRemove}
-      >
+      <AlertDialogUi message={infoMessage} handleRemove={handleRemove}>
         {isPending && <Spinner className="mx-auto" size="3" />}
         {error && <CalloutUi message={error.message} />}
         {isSuccess && <CalloutUi message="Success!" />}
@@ -112,9 +109,9 @@ const ClubRemoveDialog = ({ clubData }: { clubData: Club }) => {
       url={`/club/${clubData.id}`}
       method="DELETE"
       initialValues={{}}
-      dialogTitle="Club Removing"
+      dialogTitle="Removing club"
       buttonText="Remove"
-      clubData={clubData}
+      infoMessage={`Removing club -> [id] ${clubData.id}, [name] ${clubData.name}`}
     />
   );
 };

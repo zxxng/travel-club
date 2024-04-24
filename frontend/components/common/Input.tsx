@@ -47,7 +47,7 @@ interface InputProps {
   errors: FieldErrors<RequestData>;
 }
 
-const NameInput = ({ control, errors }: InputProps) => {
+const ClubNameInput = ({ control, errors }: InputProps) => {
   return (
     <Input
       control={control}
@@ -61,21 +61,21 @@ const NameInput = ({ control, errors }: InputProps) => {
   );
 };
 
-const IntroInput = ({ control, errors }: InputProps) => {
+const ClubIntroInput = ({ control, errors }: InputProps) => {
   return (
     <Input
       control={control}
       errors={errors}
       dataKey="intro"
       rules={{
-        required: 'Please enter club name.',
+        required: 'Please enter club intro.',
         minLength: { value: 10, message: 'Intro should be longer than 10' },
       }}
     />
   );
 };
 
-Input.Name = NameInput;
-Input.Intro = IntroInput;
+Input.ClubName = ClubNameInput;
+Input.ClubIntro = ClubIntroInput;
 
 export default Input;
