@@ -4,6 +4,7 @@ import io.nextree.travelclub.web.domain.club.CommunityMember;
 import io.nextree.travelclub.web.service.MemberService;
 import io.nextree.travelclub.web.service.dto.MemberDto;
 import io.nextree.travelclub.web.service.dto.MembershipDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Member;
@@ -20,10 +21,10 @@ public class MemberController {
     }
 
     @PostMapping // localhost:8080/member/
-    public String register(@RequestBody MemberDto memberDto) {
+    public ResponseEntity<String> register(@RequestBody MemberDto memberDto) {
         memberService.register(memberDto);
 
-        return memberDto.getEmail();
+        return ResponseEntity.ok("{\"email\":\"" + memberDto.getEmail()+ "\"}");
     }
 
     @GetMapping("/{email}")
@@ -37,12 +38,16 @@ public class MemberController {
     }
 
     @PutMapping
-    public void modify(@RequestBody MemberDto memberDto) {
+    public ResponseEntity<String> modify(@RequestBody MemberDto memberDto) {
         memberService.modify(memberDto);
+
+        return ResponseEntity.ok("{\"message\":\"Member modified successfully\"}");
     }
 
     @DeleteMapping("/{email}")
-    public void delete(@PathVariable String email) {
+    public ResponseEntity<String> delete(@PathVariable String email) {
         memberService.remove(email);
+
+        return ResponseEntity.ok("{\"message\":\"Member deleted successfully\"}");
     }
 }
