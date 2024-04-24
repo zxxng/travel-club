@@ -9,4 +9,4 @@ export const queryKeyAtom = atom<string[]>([]);
 
 export const membershipTargetAtom = atom<Club | null>(null);
 
-export const boardTargetAtom = atom<string | null>(null);
+export const boardTargetAtom = atom<Club | null>(null);

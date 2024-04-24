@@ -5,6 +5,7 @@ import CalloutUi from '../ui/CalloutUi';
 import SkeletonUi from '../ui/SkeletonUi';
 import { useAtom, useSetAtom } from 'jotai';
 import {
+  boardTargetAtom,
   keywordAtom,
   membershipTargetAtom,
   queryKeyAtom,
@@ -14,11 +15,17 @@ import DataTable from './DataTable';
 
 const TargetTable = () => {};
 
-const TargetClub = () => {
+interface TargetClubProps {
+  target: 'membership' | 'board';
+}
+
+const TargetClub = ({ target }: TargetClubProps) => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const setTarget = useSetAtom(membershipTargetAtom);
+  const setTarget = useSetAtom(
+    target === 'membership' ? membershipTargetAtom : boardTargetAtom,
+  );
   const url = `/club${select === 'ID' ? `/${keyword}` : `?name=${keyword}`}`;
 
   useEffect(() => {

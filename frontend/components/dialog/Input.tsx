@@ -116,9 +116,7 @@ const MemberBirthdayInput = ({ control, errors }: InputProps) => {
 };
 
 const BoardNameInput = ({ control, errors }: InputProps) => {
-  return (
-    <Input control={control} errors={errors} dataKey="boardName" rules={{}} />
-  );
+  return <Input control={control} errors={errors} dataKey="name" rules={{}} />;
 };
 
 Input.ClubName = ClubNameInput;
