@@ -1,40 +1,69 @@
-import React from 'react';
-import { Table } from '@radix-ui/themes';
-import { Membership } from '@/types/apiResponse';
+import React, { useEffect } from 'react';
+import { type Membership } from '@/types/apiResponse';
+import useApiQuery from '@/hooks/useApiQuery';
+import CalloutUi from '../ui/CalloutUi';
+import SkeletonUi from '../ui/SkeletonUi';
+import { useAtom } from 'jotai';
+import { keywordAtom, queryKeyAtom, selectAtom } from '@/atom/searchAtom';
+import DataTable from './DataTable';
 
-interface MembershipTableProps {
-  membershipList: Membership[];
-}
+const MembershipTable = () => {
+  const [keyword, setKeyword] = useAtom(keywordAtom);
+  const [select, setSelect] = useAtom(selectAtom);
+  const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
+  const url =
+    select === 'Club ID' ? `clubId=${keyword}` : `memberId=${keyword}`;
 
-const MembershipTable = ({ membershipList }: MembershipTableProps) => {
+  useEffect(() => {
+    setQueryKey(['get', url]);
+  }, [url]);
+
+  useEffect(() => {
+    setKeyword('');
+    setSelect('Club ID');
+  }, []);
+
+  const {
+    data: membershipData,
+    error,
+    isLoading,
+  } = useApiQuery<Membership | Membership[]>(`/membership?${url}`, {
+    queryKey: queryKey,
+    enabled: keyword != '',
+    retry: 1,
+  });
+
+  if (isLoading) return <SkeletonUi />;
+  if (error) return <CalloutUi message={`${error.message}`} className="mt-5" />;
+
   return (
     <>
-      <h3 className="text-medium-gray text-lg font-semibold mt-5 px-2">
-        Membership List
-      </h3>
-      <Table.Root>
-        <Table.Header>
-          <Table.Row>
-            <Table.ColumnHeaderCell>Club ID</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Member Email</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Role</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Join Date</Table.ColumnHeaderCell>
-          </Table.Row>
-        </Table.Header>
+      {membershipData && (
+        <DataTable title="Membership List">
+          <DataTable.Header
+            headers={[
+              'Club ID',
+              'Member Email',
+              'Role',
+              'Join Date',
+              'Management',
+            ]}
+          />
 
-        <Table.Body>
-          {membershipList.map((membership: Membership, index: number) => {
-            return (
-              <Table.Row key={index}>
-                <Table.RowHeaderCell>{membership.clubId}</Table.RowHeaderCell>
-                <Table.Cell>{membership.memberEmail}</Table.Cell>
-                <Table.Cell>{membership.role}</Table.Cell>
-                <Table.Cell>{membership.joinDate}</Table.Cell>
-              </Table.Row>
-            );
-          })}
-        </Table.Body>
-      </Table.Root>
+          {Array.isArray(membershipData) ? (
+            membershipData.map((membership) => {
+              return (
+                <DataTable.MembershipRow
+                  key={`${membership.clubId}:${membership.memberEmail}`}
+                  membershipData={membership}
+                />
+              );
+            })
+          ) : (
+            <DataTable.MembershipRow membershipData={membershipData} />
+          )}
+        </DataTable>
+      )}
     </>
   );
 };

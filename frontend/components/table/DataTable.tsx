@@ -4,6 +4,7 @@ import { Club, Member, Membership, Board } from '@/types/apiResponse';
 import ClubDialog from '../dialog/ClubDialog';
 import MemberDialog from '../dialog/MemberDialog';
 import BoardDialog from '../dialog/BoardDialog';
+import MembershipDialog from '../dialog/MembershipDialog';
 
 type Option = 'management' | 'selector' | 'none';
 interface DataTableProps {
@@ -41,9 +42,11 @@ const Header = ({ headers }: { headers: string[] }) => {
 const ClubRow = ({
   clubData,
   option = 'management',
+  onClick,
 }: {
   clubData: Club;
   option?: Option;
+  onClick?: (data: Club) => void;
 }) => {
   return (
     <Table.Body>
@@ -59,7 +62,7 @@ const ClubRow = ({
               <ClubDialog.Delete clubData={clubData} />
             </div>
           ) : (
-            <Button>Selector</Button>
+            <Button onClick={() => onClick?.(clubData)}>Selector</Button>
           )}
         </Table.Cell>
       </Table.Row>
@@ -104,9 +107,8 @@ const MembershipRow = ({
         {option === 'management' ? (
           <Table.Cell>
             <div className="flex gap-1">
-              <Button>edit/delete</Button>
-              {/* <MemberDialog.Modify memberData={memberData} />
-          <MemberDialog.Delete memberData={memberData} /> */}
+              <MembershipDialog.Modify membershipData={membershipData} />
+              <MembershipDialog.Delete membershipData={membershipData} />
             </div>
           </Table.Cell>
         ) : null}

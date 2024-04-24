@@ -45,6 +45,7 @@ const Input = ({ control, dataKey, rules, errors }: InputUiProps) => {
 interface InputProps {
   control: Control<RequestData>;
   errors: FieldErrors<RequestData>;
+  dataKey?: string;
 }
 
 const ClubNameInput = ({ control, errors }: InputProps) => {
@@ -75,12 +76,16 @@ const ClubIntroInput = ({ control, errors }: InputProps) => {
   );
 };
 
-const MemberEmailInput = ({ control, errors }: InputProps) => {
+const MemberEmailInput = ({
+  control,
+  errors,
+  dataKey = 'email',
+}: InputProps) => {
   return (
     <Input
       control={control}
       errors={errors}
-      dataKey="email"
+      dataKey={dataKey}
       rules={{
         required: `Please enter member email.`,
       }}
@@ -110,6 +115,12 @@ const MemberBirthdayInput = ({ control, errors }: InputProps) => {
   );
 };
 
+const BoardNameInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input control={control} errors={errors} dataKey="boardName" rules={{}} />
+  );
+};
+
 Input.ClubName = ClubNameInput;
 Input.ClubIntro = ClubIntroInput;
 Input.MemberEmail = MemberEmailInput;
@@ -117,5 +128,6 @@ Input.MemberName = MemberNameInput;
 Input.MemberNickName = MemberNickNameInput;
 Input.MemberPhoneNumber = MemberPhoneNumberInput;
 Input.MemberBirthDay = MemberBirthdayInput;
+Input.BoardName = BoardNameInput;
 
 export default Input;

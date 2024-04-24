@@ -3,6 +3,7 @@ package io.nextree.travelclub.web.controller;
 import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.service.MembershipService;
 import io.nextree.travelclub.web.service.dto.MembershipDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,12 +36,16 @@ public class MembershipController {
     }
 
     @PutMapping
-    public void modify(@RequestBody MembershipDto clubMembershipDto) {
+    public ResponseEntity<String> modify(@RequestBody MembershipDto clubMembershipDto) {
         membershipService.modify(clubMembershipDto);
+
+        return ResponseEntity.ok("{\"message\":\"Membership modified successfully\"}");
     }
 
     @DeleteMapping("/{clubId}/{memberId}")
-    public void delete(@PathVariable("clubId") Long clubId, @PathVariable("memberId") String memberId) {
+    public ResponseEntity<String> delete(@PathVariable("clubId") Long clubId, @PathVariable("memberId") String memberId) {
         membershipService.delete(clubId, memberId);
+
+        return ResponseEntity.ok("{\"message\":\"Membership deleted successfully\"}");
     }
 }
