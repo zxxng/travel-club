@@ -18,8 +18,11 @@ import org.springframework.beans.BeanUtils;
 @IdClass(MembershipId.class)
 public class MembershipJpo {
     @Id
+    @JoinColumn(name="clubId")
     private Long clubId;
+
     @Id
+    @JoinColumn(name="memberEmail")
     private String memberEmail;
 
     @Enumerated(EnumType.STRING)

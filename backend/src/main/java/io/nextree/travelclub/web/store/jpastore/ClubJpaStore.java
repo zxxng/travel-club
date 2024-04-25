@@ -6,6 +6,7 @@ import io.nextree.travelclub.web.store.jpastore.jpo.TravelClubJpo;
 import io.nextree.travelclub.web.store.jpastore.repository.ClubRepository;
 import io.nextree.travelclub.web.util.exception.NoSuchClubException;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -37,14 +38,14 @@ public class ClubJpaStore implements ClubStore {
 
     @Override
     public TravelClub retrieveByName(String name) {
-        // TODO: 반환 타입 확인 필요
         return  clubRepository.findAllByName(name).stream().findAny()
                 .map(TravelClubJpo::toDomain).orElse(null);
     }
 
     @Override
+    @Transactional
     public void update(TravelClub club) {
-        clubRepository.save(new TravelClubJpo(club));
+        clubRepository.updateUserNameAndIntroById(club.getId(), club.getName(), club.getIntro());
     }
 
     @Override

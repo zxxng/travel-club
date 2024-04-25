@@ -5,6 +5,7 @@ import io.nextree.travelclub.web.store.MemberStore;
 import io.nextree.travelclub.web.store.jpastore.jpo.MemberJpo;
 import io.nextree.travelclub.web.store.jpastore.repository.MemberRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,8 +31,6 @@ public class MemberJpaStore implements MemberStore {
         Optional<MemberJpo> memberJpo = memberRepository.findById(email);
         if (!memberJpo.isPresent()) {
             return null;
-            // TODO: 데이터베이스에 멤버가 없을 시 등록 안되는 문제 발생. 로직 검토 필요
-//            throw new NoSuchMemberException(String.format("CommunityMember(%s) is not found.", email));
         }
 
         return memberJpo.get().toDomain();
@@ -45,8 +44,9 @@ public class MemberJpaStore implements MemberStore {
     }
 
     @Override
+    @Transactional
     public void update(CommunityMember member) {
-        memberRepository.save(new MemberJpo(member));
+        memberRepository.updateMemberInfoById(member.getEmail(), member.getName(), member.getNickName(), member.getPhoneNumber(), member.getBirthDay());
     }
 
     @Override

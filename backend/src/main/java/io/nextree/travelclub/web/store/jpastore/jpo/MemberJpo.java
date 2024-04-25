@@ -29,8 +29,8 @@ public class MemberJpo {
     @Convert(converter = AddressConverter.class)
     private List<Address> addresses;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "memberEmail", referencedColumnName = "email")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name = "memberEmail", referencedColumnName = "email", updatable = false)
     private List<MembershipJpo> membershipList;
 
     public MemberJpo(CommunityMember member) {
