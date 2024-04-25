@@ -18,7 +18,7 @@ const SubTitle = ({
 }) => {
   return (
     <>
-      <p className="text-primary-blue text-xl font-semibold">[ {subTitle} ]</p>
+      <p className="text-primary-blue text-xl font-semibold">{subTitle}</p>
       <CircleX
         className="cursor-pointer text-accent-red w-5 ml-[-10px]"
         onClick={onClick}

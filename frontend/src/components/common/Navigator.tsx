@@ -5,7 +5,13 @@ import logo from '@/public/nextree_logo.svg';
 import Image from 'next/image';
 
 const Navigator = () => {
-  const menuList = ['Club', 'Member', 'Membership', 'Board', 'Posting'];
+  const menuList = [
+    { name: 'Travel Club', url: '/club' },
+    { name: 'Community Member', url: '/member' },
+    { name: 'Club Membership', url: '/membership' },
+    { name: 'Social Board', url: '/board' },
+    { name: 'Posting', url: '/posting' },
+  ];
 
   return (
     <nav className="min-w-72 w-1/4 bg-primary-blue text-white relative">
@@ -16,12 +22,12 @@ const Navigator = () => {
       <ul className="text-xl font-semibold text-center">
         {menuList.map((menu) => {
           return (
-            <li key={menu}>
+            <li key={menu.name}>
               <Link
-                href={`/${menu.toLocaleLowerCase()}`}
+                href={menu.url}
                 className="block py-4 hover:py-5 hover:bg-white hover:text-black transition"
               >
-                {menu}
+                {menu.name}
               </Link>
             </li>
           );

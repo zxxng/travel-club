@@ -21,7 +21,7 @@ const PostingMenuPage = () => {
           <Header>
             <Header.Title title="Posting Menu" />
             <Header.SubTitle
-              subTitle={`Target Board Name: ${target.name}`}
+              subTitle={`[Target Board] ID: ${target.clubId}, Name: ${target.name}`}
               onClick={() => setTarget(null)}
             />
           </Header>

@@ -19,9 +19,9 @@ const MembershipMenuPage = () => {
       {target ? (
         <>
           <Header>
-            <Header.Title title="Membership Menu" />
+            <Header.Title title="Club Membership Menu" />
             <Header.SubTitle
-              subTitle={`Target Club Name: ${target.name}`}
+              subTitle={`[Target Club] ID: ${target.id}, Name: ${target.name}`}
               onClick={() => setTarget(null)}
             />
           </Header>
@@ -37,14 +37,14 @@ const MembershipMenuPage = () => {
       ) : (
         <>
           <Header>
-            <Header.Title title="Membership Menu" />
+            <Header.Title title="Club Membership Menu" />
           </Header>
 
           <SectionMenu title="Find Target Club">
             <SearchBar selectList={['ID']} />
             <TargetTable.Club target="membership" />
           </SectionMenu>
-          <SectionMenu title="Membership Register">
+          <SectionMenu title="Register Membership">
             <CalloutUi message="You must select a target" />
           </SectionMenu>
           <SectionMenu title="Find Membership">

@@ -11,7 +11,7 @@ const MemberMenuPage = () => {
   return (
     <>
       <Header>
-        <Header.Title title="Member Menu" />
+        <Header.Title title="Community Member Menu" />
       </Header>
 
       <SectionMenu title="Register Member">

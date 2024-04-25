@@ -19,9 +19,9 @@ const BoardMenuPage = () => {
       {target ? (
         <>
           <Header>
-            <Header.Title title="SocialBoard Menu" />
+            <Header.Title title="Social Board Menu" />
             <Header.SubTitle
-              subTitle={`Target Club Name: ${target.name}`}
+              subTitle={`[Target Club] ID: ${target.id}, Name: ${target.name}`}
               onClick={() => setTarget(null)}
             />
           </Header>
@@ -37,7 +37,7 @@ const BoardMenuPage = () => {
       ) : (
         <>
           <Header>
-            <Header.Title title="SocialBoard Menu" />
+            <Header.Title title="Social Board Menu" />
           </Header>
 
           <SectionMenu title="Find Target Club">
