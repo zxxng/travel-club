@@ -3,6 +3,7 @@ package io.nextree.travelclub.web.controller;
 import io.nextree.travelclub.web.domain.board.SocialBoard;
 import io.nextree.travelclub.web.service.BoardService;
 import io.nextree.travelclub.web.service.dto.BoardDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,12 +41,16 @@ public class BoardController {
     }
 
     @PutMapping
-    public void modify(@RequestBody BoardDto boardDto) {
+    public ResponseEntity<String> modify(@RequestBody BoardDto boardDto) {
         boardService.modify(boardDto);
+
+        return ResponseEntity.ok("{\"message\":\"Board modified successfully\"}");
     }
 
     @DeleteMapping("/{boardId}")
-    public void delete(@PathVariable Long boardId) {
+    public ResponseEntity<String> delete(@PathVariable Long boardId) {
         boardService.remove(boardId);
+
+        return ResponseEntity.ok("{\"message\":\"Board deleted successfully\"}");
     }
 }
