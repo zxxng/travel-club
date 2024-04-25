@@ -18,19 +18,16 @@ import java.util.List;
 @Table(name="SOCIAL_BOARD")
 public class BoardJpo {
     @Id
+    @JoinColumn(name = "clubId")
     private Long clubId;
-
-    @OneToOne
-    @JoinColumn(name = "club_id", referencedColumnName = "id")
-    private TravelClubJpo club;
 
     private String name;
     private String adminEmail;
     private String createDate;
     private int sequence;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name="id", referencedColumnName = "clubId")
+    @OneToMany(orphanRemoval = true)
+    @JoinColumn(name="clubId", referencedColumnName = "clubId", updatable = false)
     private List<PostingJpo> postingList = new ArrayList<PostingJpo>();
 
     public BoardJpo(SocialBoard board) {

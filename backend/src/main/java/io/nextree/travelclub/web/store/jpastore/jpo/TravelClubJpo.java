@@ -29,10 +29,11 @@ public class TravelClubJpo {
     private String foundationDay;
 
     @OneToMany(orphanRemoval = true)
-    @JoinColumn(name = "clubId", referencedColumnName = "id", updatable = false)
+    @JoinColumn(name = "membershipList", referencedColumnName = "id", updatable = false)
     private List<MembershipJpo> membershipList;
 
-    @OneToOne(mappedBy = "club", orphanRemoval = true)
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "board", referencedColumnName = "clubId", updatable = false)
     private BoardJpo board;
 
     public TravelClubJpo(TravelClub travelClub) {

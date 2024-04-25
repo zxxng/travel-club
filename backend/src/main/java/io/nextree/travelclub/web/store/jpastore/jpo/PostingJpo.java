@@ -18,6 +18,7 @@ public class PostingJpo {
     @Column(unique = true)
     private String postingId;			// format - 1:1
 
+    @JoinColumn(name = "clubId")
     private Long boardId;
 
     private String title;
