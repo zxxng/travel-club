@@ -125,7 +125,7 @@ const PostingTitleInput = ({ control, errors }: InputProps) => {
 
 const PostingContentsInput = ({ control, errors }: InputProps) => {
   return (
-    <Input control={control} errors={errors} dataKey="contetns" rules={{}} />
+    <Input control={control} errors={errors} dataKey="contents" rules={{}} />
   );
 };
 

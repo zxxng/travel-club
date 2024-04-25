@@ -26,7 +26,7 @@ public class PostingController {
         return ResponseEntity.ok("{\"postingId\":\"" + postingDto.getPostingId() + "\"}");
     }
 
-    @GetMapping ("/{postingId}") // localhost:8080/posting/1:00001
+    @GetMapping ("/{postingId}") // localhost:8080/posting/1:1
     public PostingDto find(@PathVariable String postingId) {
         return postingService.find(postingId);
     }

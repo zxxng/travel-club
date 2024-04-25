@@ -32,6 +32,7 @@ public class PostingDto {
 
     public PostingDto(Posting posting) {
         this.postingId = posting.getPostingId();
+        this.boardId = posting.getBoardId();
         this.title = posting.getTitle();
         this.writerEmail = posting.getWriterEmail();
         this.contents = posting.getContents();

@@ -64,8 +64,8 @@ const PostingRegistDialog = ({ boardId }: { boardId: number }) => {
       method="POST"
       initialValues={{
         boardId: boardId,
-        title: '',
         writerEmail: '',
+        title: '',
         contents: '',
       }}
       dialogTitle="Posting Registration"
