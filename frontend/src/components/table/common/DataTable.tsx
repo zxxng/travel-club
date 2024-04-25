@@ -4,6 +4,7 @@ import {
   Club,
   Member,
   Membership,
+  Address,
   Board,
   Posting,
 } from '@/src/types/apiResponse';
@@ -124,6 +125,20 @@ const MembershipRow = ({
   );
 };
 
+const AddressRow = ({ addressData }: { addressData: Address }) => {
+  return (
+    <Table.Body>
+      <Table.Row>
+        <Table.RowHeaderCell>{addressData.zipCode}</Table.RowHeaderCell>
+        <Table.Cell>{addressData.zipAddress}</Table.Cell>
+        <Table.Cell>{addressData.streetAddress}</Table.Cell>
+        <Table.Cell>{addressData.country}</Table.Cell>
+        <Table.Cell>{addressData.addressType}</Table.Cell>
+      </Table.Row>
+    </Table.Body>
+  );
+};
+
 const BoardRow = ({
   boardData,
   option = 'management',
@@ -181,6 +196,7 @@ DataTable.Header = Header;
 DataTable.ClubRow = ClubRow;
 DataTable.MemberRow = MemberRow;
 DataTable.MembershipRow = MembershipRow;
+DataTable.AddressRow = AddressRow;
 DataTable.BoardRow = BoardRow;
 DataTable.PostingRow = PostingRow;
 

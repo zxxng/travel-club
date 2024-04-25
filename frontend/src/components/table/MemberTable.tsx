@@ -63,6 +63,29 @@ const MemberTable = () => {
             )}
           </DataTable>
 
+          {/* address */}
+          {!Array.isArray(memberData) && memberData.addresses.length != 0 && (
+            <DataTable title="Address List">
+              <DataTable.Header
+                headers={[
+                  'Zip Code',
+                  'Zip Address',
+                  'Street Address',
+                  'Contry',
+                  'Type',
+                ]}
+              />
+              {memberData.addresses.map((address, idx) => {
+                return (
+                  <DataTable.AddressRow
+                    key={`${idx}:${address.zipCode}`}
+                    addressData={address}
+                  />
+                );
+              })}
+            </DataTable>
+          )}
+
           {/* membership */}
           {!Array.isArray(memberData) &&
             memberData.membershipList.length != 0 && (
