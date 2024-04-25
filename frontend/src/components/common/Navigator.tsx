@@ -15,10 +15,14 @@ const Navigator = () => {
 
   return (
     <nav className="min-w-72 w-1/4 bg-primary-blue text-white relative">
-      <div className="flex gap-1 justify-center items-center mx-auto py-8 border-b-2 mb-5">
+      <Link
+        href="/"
+        className="flex gap-1 justify-center items-center mx-auto py-8 border-b-2 mb-5"
+      >
         <Plane className="w-9 h-9" />
         <p className="text-3xl font-bold">Travel Club</p>
-      </div>
+      </Link>
+
       <ul className="text-xl font-semibold text-center">
         {menuList.map((menu) => {
           return (
