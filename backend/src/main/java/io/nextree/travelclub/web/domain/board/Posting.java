@@ -12,15 +12,16 @@ import java.util.List;
 
 @Getter
 @Setter
-public class Posting implements Entity {
-    private String usid;			// format - BoardId:00021
+public class Posting {
+    private String postingId;			// format - 1:1
+    private Long boardId;
+
     private String title;
     private String writerEmail;		// member email
     private String contents;
     private String writtenDate;
     private int readCount;
 
-    private Long boardId;
 
     private Posting() {
         this.readCount = 0;
@@ -28,7 +29,7 @@ public class Posting implements Entity {
 
     public Posting(SocialBoard board, String title, String writerEmail, String contents) {
         this();
-        this.usid = board.nextPostingId();
+        this.postingId = board.nextPostingId();
         this.boardId = board.getClubId();
         this.title = title;
         this.writerEmail = writerEmail;
@@ -37,7 +38,7 @@ public class Posting implements Entity {
     }
 
     public Posting(String postingId, Long boardId, String title, String writerEmail, String contents) {
-        this.usid = postingId;
+        this.postingId = postingId;
         this.boardId = boardId;
         this.title = title;
         this.writerEmail = writerEmail;
@@ -49,7 +50,7 @@ public class Posting implements Entity {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("[Posting] id: " + usid);
+        builder.append("[Posting] id: " + postingId);
         builder.append(", title: " + title);
         builder.append(", writer email: " + writerEmail);
         builder.append(", read count: " + readCount);
@@ -71,15 +72,10 @@ public class Posting implements Entity {
 
         CommunityMember member = CommunityMember.getSample();
         Posting memberPosting = new Posting(board, "self intro", member.getEmail(), "Hello, My name is jena.");
-        memberPosting.setUsid(postingUsid);
+        memberPosting.setPostingId(postingUsid);
         postings.add(memberPosting);
 
         return postings;
-    }
-
-    @Override
-    public String getId() {
-        return usid;
     }
 
     public static void main(String[] args) {

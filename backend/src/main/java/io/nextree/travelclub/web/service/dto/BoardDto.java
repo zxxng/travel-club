@@ -13,6 +13,7 @@ public class BoardDto {
     private String adminEmail;
     private String createDate;
 
+
     public BoardDto(Long clubId, String name, String adminEmail) {
         this.clubId = clubId;
         this.name = name;

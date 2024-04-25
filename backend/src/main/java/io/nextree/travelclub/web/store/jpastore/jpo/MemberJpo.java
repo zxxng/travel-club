@@ -29,7 +29,7 @@ public class MemberJpo {
     @Convert(converter = AddressConverter.class)
     private List<Address> addresses;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "memberEmail", referencedColumnName = "email")
     private List<MembershipJpo> membershipList;
 

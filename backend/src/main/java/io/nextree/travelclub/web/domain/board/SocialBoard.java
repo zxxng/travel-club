@@ -61,7 +61,7 @@ public class SocialBoard implements Entity {
     }
 
     public String nextPostingId() {
-        return String.format("%d:%05d", clubId, sequence++);
+        return String.format("%d:%d", clubId, sequence);
     }
 
     public static void main(String[] args) {

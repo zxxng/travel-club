@@ -15,7 +15,10 @@ import org.springframework.beans.BeanUtils;
 @Table(name="POSTING")
 public class PostingJpo {
     @Id
-    private String usid;			// format - 1:00001
+    @Column(unique = true)
+    private String postingId;			// format - 1:1
+
+    private Long boardId;
 
     private String title;
     private String writerEmail;		// member email
@@ -23,22 +26,16 @@ public class PostingJpo {
     private String writtenDate;
     private int readCount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "board_clubId")
-    private BoardJpo board;
-
-    private Long boardId;
-
     public PostingJpo(Posting posting) {
         BeanUtils.copyProperties(posting, this);
 
-        if (this.writerEmail == null) {
-            this.writerEmail = DateUtil.today();
+        if (this.writtenDate == null) {
+            this.writtenDate = DateUtil.today();
         }
     }
 
     public Posting toDomain() {
-        Posting posting = new Posting(this.usid, this.board.getClubId(), this.title, this.writerEmail, this.contents);
+        Posting posting = new Posting(this.postingId, this.boardId, this.title, this.writerEmail, this.contents);
         posting.setWrittenDate(this.writtenDate);
         posting.setReadCount(this.readCount);
 

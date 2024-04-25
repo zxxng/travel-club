@@ -1,8 +1,10 @@
 package io.nextree.travelclub.web.service.logic;
 
 import io.nextree.travelclub.web.domain.board.Posting;
+import io.nextree.travelclub.web.domain.board.SocialBoard;
 import io.nextree.travelclub.web.service.PostingService;
 import io.nextree.travelclub.web.service.dto.BoardDto;
+import io.nextree.travelclub.web.service.dto.MembershipDto;
 import io.nextree.travelclub.web.service.dto.PostingDto;
 import io.nextree.travelclub.web.store.BoardStore;
 import io.nextree.travelclub.web.store.ClubStore;
@@ -34,16 +36,24 @@ public class PostingServiceLogic implements PostingService {
     @Override
     public String register(Long boardId, PostingDto postingDto) {
         if (!boardStore.exists(boardId)) {
-            throw new NoSuchBoardException("No such board whit id: " + boardId);
+            throw new NoSuchBoardException("No such board with id: " + boardId);
         }
 
         if (!membershipStore.exists(new MembershipId(boardId, postingDto.getWriterEmail()))) {
             throw new NoSuchMemberException("In the club, No such member with email: " + postingDto.getWriterEmail());
         }
 
-        return Optional.ofNullable(boardStore.retrieve(boardId))
+        // posting update
+        String postingId = Optional.ofNullable(boardStore.retrieve(boardId))
                 .map(board -> postingStore.create(postingDto.toPostingIn(board)))
                 .orElseThrow(() -> new NoSuchBoardException("No such board with id --> " + boardId));
+
+        // sequence update
+        SocialBoard targetBoard = boardStore.retrieve(boardId);
+        targetBoard.setSequence(targetBoard.getSequence() + 1);
+        boardStore.update(targetBoard);
+
+        return postingId;
     }
 
     @Override
@@ -68,7 +78,7 @@ public class PostingServiceLogic implements PostingService {
 
     @Override
     public void modify(PostingDto postingDto) {
-        String postingId = postingDto.getUsid();
+        String postingId = postingDto.getPostingId();
         Posting targetPosting = Optional.ofNullable(postingStore.retrieve(postingId))
                 .orElseThrow(() -> new NoSuchPostingException("No such posting with id --> " + postingId));
 

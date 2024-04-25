@@ -9,7 +9,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PostingDto {
-    private String usid;
+    private String postingId;
+    private Long boardId;
+
     private String title;
     private String writerEmail;
     private String contents;
@@ -29,7 +31,7 @@ public class PostingDto {
     }
 
     public PostingDto(Posting posting) {
-        this.usid = posting.getUsid();
+        this.postingId = posting.getPostingId();
         this.title = posting.getTitle();
         this.writerEmail = posting.getWriterEmail();
         this.contents = posting.getContents();
@@ -39,7 +41,6 @@ public class PostingDto {
 
     public Posting toPostingIn(SocialBoard board) {
         Posting posting = new Posting(board, title, writerEmail, contents);
-        posting.setUsid(board.nextPostingId());
         posting.setWrittenDate(writtenDate);
         posting.setReadCount(readCount);
 
@@ -58,7 +59,7 @@ public class PostingDto {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        builder.append("Posting id: " + usid);
+        builder.append("Posting id: " + postingId);
         builder.append(", title: " + title);
         builder.append(", writer email: " + writerEmail);
         builder.append(", read count: " + readCount);

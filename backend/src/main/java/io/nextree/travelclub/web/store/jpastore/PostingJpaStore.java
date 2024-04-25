@@ -20,9 +20,10 @@ public class PostingJpaStore implements PostingStore {
 
     @Override
     public String create(Posting posting) {
-        postingRepository.save(new PostingJpo(posting));
+        PostingJpo postingJpo = new PostingJpo(posting);
+        postingRepository.save(postingJpo);
 
-        return posting.getId();
+        return posting.getPostingId();
     }
 
     @Override

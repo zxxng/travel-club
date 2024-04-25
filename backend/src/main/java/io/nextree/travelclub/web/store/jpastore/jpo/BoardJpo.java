@@ -24,13 +24,14 @@ public class BoardJpo {
     @JoinColumn(name = "club_id", referencedColumnName = "id")
     private TravelClubJpo club;
 
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PostingJpo> postingJpos = new ArrayList<PostingJpo>();
-
     private String name;
     private String adminEmail;
     private String createDate;
     private int sequence;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="id", referencedColumnName = "clubId")
+    private List<PostingJpo> postingList = new ArrayList<PostingJpo>();
 
     public BoardJpo(SocialBoard board) {
         BeanUtils.copyProperties(board, this);

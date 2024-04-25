@@ -22,7 +22,7 @@ public class PostingController {
     public String register(@PathVariable Long boardId,@RequestBody PostingDto postingDto) {
         postingService.register(boardId, postingDto);
 
-        return postingDto.getUsid();
+        return postingDto.getPostingId();
     }
 
     @GetMapping ("/{postingId}") // localhost:8080/posting/1:00001

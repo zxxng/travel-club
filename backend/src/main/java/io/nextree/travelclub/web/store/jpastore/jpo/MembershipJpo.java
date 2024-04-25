@@ -3,6 +3,7 @@ package io.nextree.travelclub.web.store.jpastore.jpo;
 import io.nextree.travelclub.web.domain.club.ClubMembership;
 import io.nextree.travelclub.web.domain.club.vo.RoleInClub;
 import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
+import io.nextree.travelclub.web.util.helper.DateUtil;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,10 @@ public class MembershipJpo {
 
     public MembershipJpo(ClubMembership clubMembership) {
         BeanUtils.copyProperties(clubMembership, this);
+
+        if (this.joinDate == null) {
+            this.joinDate = DateUtil.today();
+        }
     }
 
     public ClubMembership toDomain() {

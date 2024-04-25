@@ -14,7 +14,6 @@ import java.util.List;
 public class TravelClub {
     private static final int MINIMUM_NAME_LENGTH =  3;
     private static final int MINIMUM_INTRO_LENGTH =  10;
-    public static final String ID_FORMAT = "%05d";
 
     private Long id;
     private String name;
@@ -57,6 +56,22 @@ public class TravelClub {
         }
 
         return club;
+    }
+
+    public void setName(String name) {
+        if (name.length() < MINIMUM_NAME_LENGTH) {
+            throw new IllegalArgumentException("Name should be longer than " + MINIMUM_NAME_LENGTH);
+        }
+
+        this.name = name;
+    }
+
+    public void setIntro(String intro) {
+        if (intro.length() < MINIMUM_INTRO_LENGTH) {
+            throw new IllegalArgumentException("Intro should be longer than " + MINIMUM_INTRO_LENGTH);
+        }
+
+        this.intro = intro;
     }
 
     public static void main(String[] args) {

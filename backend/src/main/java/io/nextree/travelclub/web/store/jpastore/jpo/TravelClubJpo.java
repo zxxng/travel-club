@@ -28,12 +28,12 @@ public class TravelClubJpo {
     private String intro;
     private String foundationDay;
 
-    @OneToOne(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
-    private BoardJpo board;
-
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "clubId", referencedColumnName = "id")
     private List<MembershipJpo> membershipList;
+
+    @OneToOne(mappedBy = "club", cascade = CascadeType.ALL, orphanRemoval = true)
+    private BoardJpo board;
 
     public TravelClubJpo(TravelClub travelClub) {
         BeanUtils.copyProperties(travelClub, this);
