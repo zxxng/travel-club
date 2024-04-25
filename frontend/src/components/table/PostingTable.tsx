@@ -13,7 +13,8 @@ const PostingTable = () => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/posting${select === 'ID' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url =
+    '/posting' + (select === 'ID' ? `/${keyword}` : `?boardId=${keyword}`);
 
   useEffect(() => {
     setQueryKey(['get', url]);
@@ -44,12 +45,13 @@ const PostingTable = () => {
           <DataTable.Header
             headers={[
               'Posting ID',
-              'Board ID(Club ID)',
+              'Board/Club ID',
               'Writer Email',
               'Title',
               'Contents',
               'Written Date',
               'Read Count',
+              'Management',
             ]}
           />
           {Array.isArray(postingData) ? (

@@ -13,7 +13,8 @@ const MemberTable = () => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/member${select === 'Email' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url =
+    '/member' + (select === 'Email' ? `/${keyword}` : `?name=${keyword}`);
 
   useEffect(() => {
     setQueryKey(['get', url]);

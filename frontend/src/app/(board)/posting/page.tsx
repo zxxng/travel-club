@@ -30,7 +30,7 @@ const PostingMenuPage = () => {
             <PostingDialog.Regist boardId={target.clubId} />
           </SectionMenu>
           <SectionMenu title="Find Posting">
-            <SearchBar selectList={['ID', 'Board Name', 'Club Name']} />
+            <SearchBar selectList={['ID', 'Board ID']} />
             <PostingTable />
           </SectionMenu>
         </>

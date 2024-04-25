@@ -13,7 +13,13 @@ const BoardTable = () => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/board${select === 'id' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url =
+    '/board' +
+    (select === 'ID'
+      ? `/${keyword}`
+      : select === 'Board Name'
+        ? `?name=${keyword}`
+        : `/club?name=${keyword}`);
 
   useEffect(() => {
     setQueryKey(['get', url]);
@@ -43,7 +49,7 @@ const BoardTable = () => {
         <DataTable title="Board List">
           <DataTable.Header
             headers={[
-              'Board ID(Club ID)',
+              'Board/Club ID',
               'Name',
               'Admin Email',
               'Creation date',

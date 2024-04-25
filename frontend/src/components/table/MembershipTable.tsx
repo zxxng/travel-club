@@ -12,7 +12,8 @@ const MembershipTable = () => {
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
   const url =
-    select === 'Club ID' ? `clubId=${keyword}` : `memberId=${keyword}`;
+    '/membership' +
+    (select === 'Club ID' ? `?clubId=${keyword}` : `?memberId=${keyword}`);
 
   useEffect(() => {
     setQueryKey(['get', url]);
@@ -27,7 +28,7 @@ const MembershipTable = () => {
     data: membershipData,
     error,
     isLoading,
-  } = useApiQuery<Membership | Membership[]>(`/membership?${url}`, {
+  } = useApiQuery<Membership | Membership[]>(url, {
     queryKey: queryKey,
     enabled: keyword != '',
     retry: 1,

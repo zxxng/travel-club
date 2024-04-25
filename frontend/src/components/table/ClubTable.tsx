@@ -13,7 +13,7 @@ const ClubTable = () => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
   const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
-  const url = `/club${select === 'ID' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url = '/club' + (select === 'ID' ? `/${keyword}` : `?name=${keyword}`);
 
   useEffect(() => {
     setQueryKey(['get', url]);
