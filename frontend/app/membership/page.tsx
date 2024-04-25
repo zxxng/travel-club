@@ -42,7 +42,7 @@ const MembershipMenuPage = () => {
 
           <SectionMenu title="Find Target Club">
             <SearchBar selectList={['ID']} />
-            <TargetTable.Club />
+            <TargetTable.Club target="membership" />
           </SectionMenu>
           <SectionMenu title="Membership Register">
             <CalloutUi message="You must select a target" />

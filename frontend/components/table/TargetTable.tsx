@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { type Club } from '@/types/apiResponse';
+import { Board, type Club } from '@/types/apiResponse';
 import useApiQuery from '@/hooks/useApiQuery';
 import CalloutUi from '../ui/CalloutUi';
 import SkeletonUi from '../ui/SkeletonUi';
@@ -8,6 +8,7 @@ import {
   boardTargetAtom,
   keywordAtom,
   membershipTargetAtom,
+  postingTargetAtom,
   queryKeyAtom,
   selectAtom,
 } from '@/atom/searchAtom';
@@ -15,18 +16,14 @@ import DataTable from './DataTable';
 
 const TargetTable = () => {};
 
-interface TargetClubProps {
-  target: 'membership' | 'board';
-}
-
-const TargetClub = ({ target }: TargetClubProps) => {
+const TargetClub = ({ target }: { target: 'membership' | 'board' }) => {
   const [keyword, setKeyword] = useAtom(keywordAtom);
-  const [select, setSelect] = useAtom(selectAtom);
   const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
+  const setSelect = useSetAtom(selectAtom);
   const setTarget = useSetAtom(
     target === 'membership' ? membershipTargetAtom : boardTargetAtom,
   );
-  const url = `/club${select === 'ID' ? `/${keyword}` : `?name=${keyword}`}`;
+  const url = `/club/${keyword}`;
 
   useEffect(() => {
     setQueryKey(['get', url]);
@@ -80,6 +77,66 @@ const TargetClub = ({ target }: TargetClubProps) => {
   );
 };
 
+const TargetBoard = () => {
+  const [keyword, setKeyword] = useAtom(keywordAtom);
+  const [queryKey, setQueryKey] = useAtom(queryKeyAtom);
+  const setSelect = useSetAtom(selectAtom);
+  const setTarget = useSetAtom(postingTargetAtom);
+  const url = `/board/${keyword}`;
+
+  useEffect(() => {
+    setQueryKey(['get', url]);
+  }, [url]);
+
+  useEffect(() => {
+    setKeyword('');
+    setSelect('ID');
+  }, []);
+
+  const {
+    data: boardData,
+    error,
+    isLoading,
+  } = useApiQuery<Board>(url, {
+    queryKey: queryKey,
+    enabled: keyword != '',
+    retry: 1,
+  });
+
+  const handleSelector = (data: Board) => {
+    setTarget(data);
+  };
+
+  if (isLoading) return <SkeletonUi />;
+  if (error) return <CalloutUi message={`${error.message}`} className="mt-5" />;
+
+  return (
+    <>
+      {boardData && (
+        <>
+          <DataTable title="">
+            <DataTable.Header
+              headers={[
+                'Board ID(Club ID)',
+                'Name',
+                'Admin Email',
+                'Creation date',
+                'Selector',
+              ]}
+            />
+            <DataTable.BoardRow
+              boardData={boardData}
+              option="selector"
+              onClick={handleSelector}
+            />
+          </DataTable>
+        </>
+      )}
+    </>
+  );
+};
+
 TargetTable.Club = TargetClub;
+TargetTable.Board = TargetBoard;
 
 export default TargetTable;

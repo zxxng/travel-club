@@ -119,6 +119,16 @@ const BoardNameInput = ({ control, errors }: InputProps) => {
   return <Input control={control} errors={errors} dataKey="name" rules={{}} />;
 };
 
+const PostingTitleInput = ({ control, errors }: InputProps) => {
+  return <Input control={control} errors={errors} dataKey="title" rules={{}} />;
+};
+
+const PostingContentsInput = ({ control, errors }: InputProps) => {
+  return (
+    <Input control={control} errors={errors} dataKey="contetns" rules={{}} />
+  );
+};
+
 Input.ClubName = ClubNameInput;
 Input.ClubIntro = ClubIntroInput;
 Input.MemberEmail = MemberEmailInput;
@@ -127,5 +137,7 @@ Input.MemberNickName = MemberNickNameInput;
 Input.MemberPhoneNumber = MemberPhoneNumberInput;
 Input.MemberBirthDay = MemberBirthdayInput;
 Input.BoardName = BoardNameInput;
+Input.PostingTitle = PostingTitleInput;
+Input.PostingContents = PostingContentsInput;
 
 export default Input;

@@ -39,3 +39,13 @@ export interface Board {
   adminEmail: string;
   createDate: string;
 }
+
+export interface Posting {
+  postingId: string;
+  boardId: number;
+  title: string;
+  writerEmail: string;
+  contents: string;
+  writtenDate: string;
+  readCount: number;
+}

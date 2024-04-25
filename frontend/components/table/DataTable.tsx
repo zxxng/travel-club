@@ -1,10 +1,11 @@
 import React from 'react';
 import { Table, Button } from '@radix-ui/themes';
-import { Club, Member, Membership, Board } from '@/types/apiResponse';
+import { Club, Member, Membership, Board, Posting } from '@/types/apiResponse';
 import ClubDialog from '../dialog/ClubDialog';
 import MemberDialog from '../dialog/MemberDialog';
 import BoardDialog from '../dialog/BoardDialog';
 import MembershipDialog from '../dialog/MembershipDialog';
+import PostingDialog from '../dialog/PostingDialog';
 
 type Option = 'management' | 'selector' | 'none';
 interface DataTableProps {
@@ -120,9 +121,11 @@ const MembershipRow = ({
 const BoardRow = ({
   boardData,
   option = 'management',
+  onClick,
 }: {
   boardData: Board;
   option?: Option;
+  onClick?: (data: Board) => void;
 }) => {
   return (
     <Table.Body>
@@ -138,8 +141,30 @@ const BoardRow = ({
               <BoardDialog.Delete boardData={boardData} />
             </div>
           ) : (
-            <Button>Selector</Button>
+            <Button onClick={() => onClick?.(boardData)}>Selector</Button>
           )}
+        </Table.Cell>
+      </Table.Row>
+    </Table.Body>
+  );
+};
+
+const PostingRow = ({ postingData }: { postingData: Posting }) => {
+  return (
+    <Table.Body>
+      <Table.Row>
+        <Table.RowHeaderCell>{postingData.postingId}</Table.RowHeaderCell>
+        <Table.Cell>{postingData.boardId}</Table.Cell>
+        <Table.Cell>{postingData.writerEmail}</Table.Cell>
+        <Table.Cell>{postingData.title}</Table.Cell>
+        <Table.Cell>{postingData.contents}</Table.Cell>
+        <Table.Cell>{postingData.writtenDate}</Table.Cell>
+        <Table.Cell>{postingData.readCount}</Table.Cell>
+        <Table.Cell>
+          <div className="flex gap-1">
+            <PostingDialog.Modify postingData={postingData} />
+            <PostingDialog.Delete postingData={postingData} />
+          </div>
         </Table.Cell>
       </Table.Row>
     </Table.Body>
@@ -151,5 +176,6 @@ DataTable.ClubRow = ClubRow;
 DataTable.MemberRow = MemberRow;
 DataTable.MembershipRow = MembershipRow;
 DataTable.BoardRow = BoardRow;
+DataTable.PostingRow = PostingRow;
 
 export default DataTable;
