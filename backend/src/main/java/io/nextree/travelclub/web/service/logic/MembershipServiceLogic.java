@@ -1,11 +1,13 @@
 package io.nextree.travelclub.web.service.logic;
 
 import io.nextree.travelclub.web.domain.club.ClubMembership;
+import io.nextree.travelclub.web.domain.club.vo.RoleInClub;
 import io.nextree.travelclub.web.service.MembershipService;
 import io.nextree.travelclub.web.service.dto.MembershipDto;
 import io.nextree.travelclub.web.store.MemberStore;
 import io.nextree.travelclub.web.store.MembershipStore;
 import io.nextree.travelclub.web.store.jpastore.jpo.id.MembershipId;
+import io.nextree.travelclub.web.util.exception.InvalidMemberRoleException;
 import io.nextree.travelclub.web.util.exception.MemberDuplicationException;
 import io.nextree.travelclub.web.util.exception.NoSuchMemberException;
 import io.nextree.travelclub.web.util.exception.NoSuchMembershipException;
@@ -36,6 +38,11 @@ public class MembershipServiceLogic implements MembershipService {
         MembershipId membershipId = toMembershipId(membershipDto.getClubId(), memberId);
         if (membershipStore.retrieveById(membershipId) != null) {
             throw new MemberDuplicationException("Member already exists in the club --> " + memberId);
+        }
+
+        // member role validation
+        if (membershipDto.getRole().equals(RoleInClub.President) && hasPresident(membershipDto.getClubId())) {
+            throw new InvalidMemberRoleException("President role already exists.");
         }
 
         membershipStore.create(membershipDto.toMembership());
@@ -70,6 +77,10 @@ public class MembershipServiceLogic implements MembershipService {
 
     @Override
     public void modify(MembershipDto clubMembershipDto) {
+        if (clubMembershipDto.getRole().equals(RoleInClub.President) && hasPresident(clubMembershipDto.getClubId())){
+            throw new InvalidMemberRoleException("President role already exists.");
+        }
+
         membershipStore.update(clubMembershipDto.toMembership());
     }
 
@@ -80,5 +91,10 @@ public class MembershipServiceLogic implements MembershipService {
 
     private MembershipId toMembershipId(Long clubId, String memberId) {
         return new MembershipId(clubId, memberId);
+    }
+
+    private boolean hasPresident(Long clubId){
+        return membershipStore.retrieveByClubId(clubId).stream()
+                .anyMatch(membership -> membership.getRole().equals(RoleInClub.President));
     }
 }

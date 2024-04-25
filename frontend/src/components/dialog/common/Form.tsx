@@ -38,7 +38,6 @@ const Form = ({ initialValue, mutation, children }: DialogProps) => {
   });
 
   const onSubmit: SubmitHandler<RequestData> = (data) => {
-    console.log(data);
     mutation.mutate(data, {
       onSuccess: () => queryClient.invalidateQueries({ queryKey: queryKey }),
     });

@@ -7,7 +7,7 @@ import RemoveDialog from './common/RemoveDialog';
 import CustomDialog from '@/src/components/dialog/common/CustomDialog';
 import Form from '@/src/components/dialog/common/Form';
 import Input from '@/src/components/dialog/common/Input';
-import { Text, Radio } from '@radix-ui/themes';
+import RadioInput from '@/src/components/dialog/common/RadioInput';
 
 interface MembershipDialogProps {
   url: string;
@@ -51,17 +51,7 @@ const MembershipDialog = ({
                 dataKey="memberEmail"
               />
             )}
-            <Text className="font-bold" size="2">
-              MemberRole
-            </Text>
-            <Text className="flex gap-1" as="label" size="2">
-              <Radio name="role" value="Member" defaultChecked />
-              Member
-            </Text>
-            <Text className="flex gap-1" as="label" size="2">
-              <Radio name="role" value="President" />
-              President
-            </Text>
+            <RadioInput control={control} errors={errors} />
           </>
         )}
       </Form>
@@ -78,7 +68,6 @@ const MembershipRegistDialog = ({ clubId }: { clubId: number }) => {
         clubId: clubId,
         memberEmail: '',
         role: 'Member',
-        joinDate: '',
       }}
       dialogTitle="Membership Registration"
       buttonText="Register"
